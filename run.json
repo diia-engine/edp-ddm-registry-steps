@@ -1,0 +1,3 @@
+{
+     "codereview": "mvn clean install -U -DuseLocalOpenshift=false -DskipTests=true -Dnamespace=mdtu-ddm-edp-cicd-data-alkoponchik-qa -Drp.enable=true -Drp.launch=registry-steps-code-review -Djunit.jupiter.extensions.autodetection.enabled=true -Drp.attributes=\"branch:$gitlabSourceBranch;mr=$gitlabMergeRequestIid;name:$BUILD_DISPLAY_NAME;\""
+  }

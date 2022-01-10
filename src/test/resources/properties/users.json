@@ -1,0 +1,24 @@
+{
+  "auto-user-data": {
+    "login": "auto-user-data",
+    "realm": "officer-portal",
+    "realmRoles": [
+      "officer"
+    ],
+    "attributes": {
+      "drfo": [
+        "2222222222"
+      ],
+      "edrpou": [
+        "11111111"
+      ],
+      "fullName": [
+        "Датовски Дата Тарасович"
+      ],
+
+      "RedashGroups": [
+        "Registry Officers"
+      ]
+    }
+  }
+}
