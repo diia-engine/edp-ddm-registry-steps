@@ -1,7 +1,8 @@
 {
   "auto-user-data": {
     "login": "auto-user-data",
-    "realm": "officer-portal",
+    "realm": "-officer-portal",
+    "clientId": "officer-portal",
     "realmRoles": [
       "officer"
     ],
@@ -15,7 +16,6 @@
       "fullName": [
         "Датовски Дата Тарасович"
       ],
-
       "RedashGroups": [
         "Registry Officers"
       ]
