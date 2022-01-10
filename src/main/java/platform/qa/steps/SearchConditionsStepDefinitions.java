@@ -1,4 +1,4 @@
-package mdtu.platform.qa.steps.definitions;
+package platform.qa.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,17 +7,17 @@ import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
 import io.cucumber.java.uk.Тоді;
 import lombok.NonNull;
-import mdtu.platform.qa.cucumber.TestContext;
-import mdtu.platform.qa.db.TableInfoDb;
-import mdtu.platform.qa.enums.Context;
-import mdtu.platform.qa.steps.BaseSteps;
+import platform.qa.base.BaseSteps;
+import platform.qa.cucumber.TestContext;
+import platform.qa.db.TableInfoDb;
+import platform.qa.enums.Context;
 import platform.qa.common.RestApiClient;
 
 import java.util.List;
 import java.util.Map;
 
 public class SearchConditionsStepDefinitions extends BaseSteps {
-    private TestContext testContext;
+    private final TestContext testContext;
 
     public SearchConditionsStepDefinitions(TestContext testContext) {
         this.testContext = testContext;

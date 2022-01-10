@@ -1,10 +1,9 @@
-package mdtu.platform.qa.steps;
+package platform.qa.base;
 
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
-import mdtu.platform.qa.base.Config;
-import mdtu.platform.qa.db.DataSourceInitializer;
 import platform.qa.config.ConfigProvider;
+import platform.qa.db.DataSourceInitializer;
 
 import javax.sql.DataSource;
 import org.junit.jupiter.api.BeforeAll;

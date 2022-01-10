@@ -1,7 +1,7 @@
-package mdtu.platform.qa.base;
+package platform.qa.base;
 
 import lombok.Getter;
-import mdtu.platform.qa.entities.Db;
+import platform.qa.entities.Db;
 import platform.qa.clients.oc.OkdClient;
 import platform.qa.config.RegistryConfig;
 import platform.qa.entities.Service;

@@ -1,4 +1,4 @@
-package mdtu.platform.qa.base;
+package platform.qa.base;
 
 public class ConstantWaits {
 

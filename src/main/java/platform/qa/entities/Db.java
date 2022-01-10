@@ -1,4 +1,4 @@
-package mdtu.platform.qa.entities;
+package platform.qa.entities;
 
 import lombok.*;
 

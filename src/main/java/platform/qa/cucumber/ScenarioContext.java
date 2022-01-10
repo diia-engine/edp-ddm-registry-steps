@@ -1,6 +1,6 @@
-package mdtu.platform.qa.cucumber;
+package platform.qa.cucumber;
 
-import mdtu.platform.qa.enums.Context;
+import platform.qa.enums.Context;
 
 import java.util.HashMap;
 import java.util.Map;

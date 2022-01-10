@@ -1,6 +1,6 @@
-package mdtu.platform.qa.db;
+package platform.qa.db;
 
-import mdtu.platform.qa.entities.Db;
+import platform.qa.entities.Db;
 import platform.qa.entities.User;
 
 import javax.sql.DataSource;

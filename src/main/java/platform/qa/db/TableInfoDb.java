@@ -1,10 +1,10 @@
-package mdtu.platform.qa.db;
+package platform.qa.db;
 
 import static org.awaitility.Awaitility.await;
 
 import io.qameta.allure.Step;
 import lombok.SneakyThrows;
-import mdtu.platform.qa.base.ConstantWaits;
+import platform.qa.base.ConstantWaits;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;

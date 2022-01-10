@@ -1,4 +1,4 @@
-package mdtu.platform.qa.enums;
+package platform.qa.enums;
 
 public enum Context {
     API_RESULT_LIST,
