@@ -7,11 +7,12 @@ import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
 import io.cucumber.java.uk.Тоді;
 import lombok.NonNull;
-import platform.qa.base.BaseSteps;
+import platform.qa.base.FileUtils;
+import platform.qa.common.RestApiClient;
 import platform.qa.cucumber.TestContext;
 import platform.qa.db.TableInfoDb;
 import platform.qa.enums.Context;
-import platform.qa.common.RestApiClient;
+import platform.qa.base.BaseSteps;
 
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,9 @@ public class SearchConditionsStepDefinitions extends BaseSteps {
     }
 
     @Тоді("^користувач робить запит до бази даних \"([^\"]*)\" для перевірки$")
-    public void user_execute_Query_with_Parameters(@NonNull String selectQuery) {
-        var result = new TableInfoDb(primarySourceDb).waitAndGetEntity(selectQuery, Map.class);
+    public void user_execute_Query_with_Parameters(@NonNull String selectFileName) {
+        String selectQuery = FileUtils.readFromFile("src/test/resources/data/queries/", selectFileName);
+        var result = new TableInfoDb(primarySourceDb).waitAndGetEntity(selectQuery);
         testContext.getScenarioContext().setContext(Context.DB_RESULT_LIST, result);
     }
 
@@ -53,4 +55,5 @@ public class SearchConditionsStepDefinitions extends BaseSteps {
         assertThat(actualResult).as("Count of rows are different:").hasSameSizeAs(expectedResult);
         assertThat(actualResult).as("Rows are different:").hasSameElementsAs(expectedResult);
     }
+
 }
