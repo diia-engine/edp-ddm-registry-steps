@@ -38,6 +38,10 @@
                     <groupId>org.apache.httpcomponents</groupId>
                     <artifactId>httpclient</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.qameta.allure</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -52,6 +56,10 @@
                 </exclusion>
                 <exclusion>
                     <groupId>org.junit.platform</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.qameta.allure</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
                 <exclusion>
