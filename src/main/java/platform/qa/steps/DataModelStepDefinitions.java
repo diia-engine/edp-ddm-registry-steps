@@ -1,9 +1,9 @@
 package platform.qa.steps;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.cucumber.java.uk.Та;
 import io.cucumber.java.uk.Тоді;
 import platform.qa.base.BaseSteps;
 import platform.qa.base.FileUtils;
@@ -33,11 +33,26 @@ public class DataModelStepDefinitions extends BaseSteps {
         assertThatJson(actualResult).as("Дані не співпадають:").isEqualTo(expectedJsonText);
     }
 
-    @Та("дата модель повертає json даних який збігається з відповіддю від запиту пошуку")
+    @Тоді("дата модель повертає json даних який збігається з відповіддю від запиту пошуку")
     public void compare_api_and_database_result() {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         var expectedResult = (List<Map>) testContext.getScenarioContext().getContext(Context.DB_RESULT_LIST);
         assertThat(actualResult).as("Кількість записів не співпадає:").hasSameSizeAs(expectedResult);
         assertThat(actualResult).as("Дані не співпадають:").hasSameElementsAs(expectedResult);
+    }
+
+    @Тоді("дата модель повертає результат який містить json даних:")
+    public void data_model_return_json_with_data_exclude_some_fields(String expectedJsonText) {
+        var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
+        assertThatJson(actualResult).as("Дані не співпадають:")
+                .when(IGNORING_EXTRA_FIELDS).isEqualTo(expectedJsonText);
+    }
+
+    @Тоді("дата модель повертає результат який містить json даних описаний в файлі {string}")
+    public void data_model_return_data_contains_json_from_file(String jsonFileName) {
+        var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
+        String expectedJsonText = FileUtils.readFromFile("src/test/resources/data/json/", jsonFileName);
+        assertThatJson(actualResult).as("Дані не співпадають:")
+                .when(IGNORING_EXTRA_FIELDS).isEqualTo(expectedJsonText);
     }
 }
