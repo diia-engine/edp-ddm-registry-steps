@@ -181,7 +181,6 @@
                     <groupId>org.junit.jupiter</groupId>
                 </exclusion>
             </exclusions>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -202,7 +201,6 @@
                     <groupId>io.rest-assured</groupId>
                 </exclusion>
             </exclusions>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
