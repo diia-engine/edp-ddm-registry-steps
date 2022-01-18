@@ -19,21 +19,21 @@ public class DatabaseStepDefinitions extends BaseSteps {
     }
 
     @Дано("розгорнута модель даних з переліком таблиць та згенерованими запитами доступу та пошуку даних")
-    public void data_factory_initialize_verification() {
+    public void verifyDataFactoryInit() {
         assertThat(config.getDataFactoryService().getUrl())
                 .as("Модель даних не розгорнута!!!")
                 .isNotNull();
     }
 
     @Тоді("виконується запит до бази даних з файлу {string}")
-    public void user_execute_query_from_file(@NonNull String selectFileName) {
+    public void executeQueryFromFile(@NonNull String selectFileName) {
         String selectQuery = FileUtils.readFromFile("src/test/resources/data/queries/", selectFileName);
         var result = new TableInfoDb(getPrimarySourceDb()).waitAndGetEntity(selectQuery);
         testContext.getScenarioContext().setContext(Context.DB_RESULT_LIST, result);
     }
 
     @Тоді("виконується запит до бази даних:")
-    public void user_execute_query(@NonNull String selectQuery) {
+    public void executeQuery(@NonNull String selectQuery) {
         var result = new TableInfoDb(getPrimarySourceDb()).waitAndGetEntity(selectQuery);
         testContext.getScenarioContext().setContext(Context.DB_RESULT_LIST, result);
     }

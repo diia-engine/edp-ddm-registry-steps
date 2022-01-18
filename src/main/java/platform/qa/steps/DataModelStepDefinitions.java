@@ -21,20 +21,20 @@ public class DataModelStepDefinitions extends BaseSteps {
     }
 
     @Тоді("дата модель повертає наспуний json даних:")
-    public void data_model_return_json_with_data(String expectedJsonText) {
+    public void verifyDataModelReturnJsonWithData(String expectedJsonText) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         assertThatJson(actualResult).as("Дані не співпадають:").isEqualTo(expectedJsonText);
     }
 
     @Тоді("дата модель повертає json даних описаний в файлі {string}")
-    public void data_model_return_json_from_file_with_data(String jsonFileName) {
+    public void verifyDataModelReturnJsonFromFileWithData(String jsonFileName) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         String expectedJsonText = FileUtils.readFromFile("src/test/resources/data/json/", jsonFileName);
         assertThatJson(actualResult).as("Дані не співпадають:").isEqualTo(expectedJsonText);
     }
 
     @Тоді("дата модель повертає json даних який збігається з відповіддю від запиту пошуку")
-    public void compare_api_and_database_result() {
+    public void compareApiAndDatabaseResult() {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         var expectedResult = (List<Map>) testContext.getScenarioContext().getContext(Context.DB_RESULT_LIST);
         assertThat(actualResult).as("Кількість записів не співпадає:").hasSameSizeAs(expectedResult);
