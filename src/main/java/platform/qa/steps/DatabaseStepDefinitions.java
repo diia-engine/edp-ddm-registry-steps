@@ -31,14 +31,14 @@ public class DatabaseStepDefinitions extends BaseSteps {
     @Тоді("виконується запит до бази даних з файлу {string}")
     public void executeQueryFromFile(@NonNull String selectFileName) {
         String selectQuery = FileUtils.readFromFile("src/test/resources/data/queries/", selectFileName);
-        LOG.info("Execute query: " + selectQuery);
+        LOG.info("Execute query:\n" + selectQuery);
         var result = new TableInfoDb(getPrimarySourceDb()).waitAndGetEntity(selectQuery);
         testContext.getScenarioContext().setContext(Context.DB_RESULT_LIST, result);
     }
 
     @Тоді("виконується запит до бази даних:")
     public void executeQuery(@NonNull String selectQuery) {
-        LOG.info("Execute query: " + selectQuery);
+        LOG.info("Execute query:\n" + selectQuery);
         var result = new TableInfoDb(getPrimarySourceDb()).waitAndGetEntity(selectQuery);
         testContext.getScenarioContext().setContext(Context.DB_RESULT_LIST, result);
     }
