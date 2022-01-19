@@ -50,7 +50,7 @@ public class DataModelStepDefinitions {
                 .when(IGNORING_EXTRA_FIELDS).isEqualTo(expectedJsonText);
     }
 
-    @Тоді("дата модель повертає точно заданий json з файлу {string}, ігноруючі невказані дані")
+    @Тоді("дата модель повертає точно заданий json з файлу {string}, ігноруючі невказані")
     public void verifyDataModelReturnJsonFromFileWithDataFromExpected(String jsonFileName) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         String expectedJsonText = FileUtils.readFromFile("src/test/resources/data/json/", jsonFileName);
