@@ -4,52 +4,54 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Тоді;
-import platform.qa.base.BaseSteps;
+import platform.qa.base.Config;
 import platform.qa.base.FileUtils;
+import platform.qa.config.ConfigProvider;
 import platform.qa.cucumber.TestContext;
 import platform.qa.enums.Context;
 
 import java.util.List;
 import java.util.Map;
 
-public class DataModelStepDefinitions extends BaseSteps {
+public class DataModelStepDefinitions {
+    private static Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
     private TestContext testContext;
 
     public DataModelStepDefinitions(TestContext testContext) {
         this.testContext = testContext;
     }
 
-    @Тоді("дата модель повертає наспуний json даних:")
+    @Дано("розгорнута модель даних з переліком таблиць та згенерованими запитами доступу та пошуку даних")
+    public void verifyDataFactoryInit() {
+        assertThat(config.getDataFactoryService().getUrl())
+                .as("Модель даних не розгорнута!!!")
+                .isNotNull();
+    }
+
+    @Тоді("дата модель повертає точно заданий json нижче:")
     public void verifyDataModelReturnJsonWithData(String expectedJsonText) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         assertThatJson(actualResult).as("Дані не співпадають:").isEqualTo(expectedJsonText);
     }
 
-    @Тоді("дата модель повертає json даних описаний в файлі {string}")
+    @Тоді("дата модель повертає json з файлу {string}")
     public void verifyDataModelReturnJsonFromFileWithData(String jsonFileName) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         String expectedJsonText = FileUtils.readFromFile("src/test/resources/data/json/", jsonFileName);
         assertThatJson(actualResult).as("Дані не співпадають:").isEqualTo(expectedJsonText);
     }
 
-    @Тоді("дата модель повертає json даних який збігається з відповіддю від запиту пошуку")
-    public void compareApiAndDatabaseResult() {
-        var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
-        var expectedResult = (List<Map>) testContext.getScenarioContext().getContext(Context.DB_RESULT_LIST);
-        assertThat(actualResult).as("Кількість записів не співпадає:").hasSameSizeAs(expectedResult);
-        assertThat(actualResult).as("Дані не співпадають:").hasSameElementsAs(expectedResult);
-    }
-
-    @Тоді("дата модель повертає результат який містить json даних:")
-    public void data_model_return_json_with_data_exclude_some_fields(String expectedJsonText) {
+    @Тоді("дата модель повертає json, який містить точно наступні дані, ігноруючі невказані:")
+    public void verifyDataModelReturnJsonWithDataFromExpected(String expectedJsonText) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         assertThatJson(actualResult).as("Дані не співпадають:")
                 .when(IGNORING_EXTRA_FIELDS).isEqualTo(expectedJsonText);
     }
 
-    @Тоді("дата модель повертає результат який містить json даних описаний в файлі {string}")
-    public void data_model_return_data_contains_json_from_file(String jsonFileName) {
+    @Тоді("дата модель повертає точно заданий json з файлу {string}, ігноруючі невказані дані")
+    public void verifyDataModelReturnJsonFromFileWithDataFromExpected(String jsonFileName) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
         String expectedJsonText = FileUtils.readFromFile("src/test/resources/data/json/", jsonFileName);
         assertThatJson(actualResult).as("Дані не співпадають:")

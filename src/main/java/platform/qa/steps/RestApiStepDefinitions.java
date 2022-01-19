@@ -1,13 +1,16 @@
 package platform.qa.steps;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.hamcrest.Matchers.isIn;
 
 import io.cucumber.java.uk.Коли;
+import io.cucumber.java.uk.Тоді;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import lombok.NonNull;
-import platform.qa.base.BaseSteps;
-import platform.qa.common.RestApiClient;
+import platform.qa.base.Config;
+import platform.qa.clients.api.RestApiClient;
+import platform.qa.config.ConfigProvider;
 import platform.qa.cucumber.TestContext;
 import platform.qa.enums.Context;
 
@@ -17,7 +20,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 
-public class RestApiStepDefinitions extends BaseSteps {
+public class RestApiStepDefinitions {
+    private static Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
     private TestContext testContext;
 
     public RestApiStepDefinitions(TestContext testContext) {
@@ -28,7 +32,7 @@ public class RestApiStepDefinitions extends BaseSteps {
 
     @Коли("виконується запит пошуку {string} з параметрами")
     public void executeGetApiWithParameters(@NonNull String path,
-                                                          @NonNull Map<String, String> queryParams) {
+                                            @NonNull Map<String, String> queryParams) {
         var result = new RestApiClient(config.getDataFactoryService())
                 .sendGetWithParams(path, queryParams)
                 .extract()
@@ -49,6 +53,15 @@ public class RestApiStepDefinitions extends BaseSteps {
                 .jsonPath()
                 .getList("", Map.class);
         testContext.getScenarioContext().setContext(Context.API_RESULT_LIST, result);
+    }
+
+    @Тоді("результат запиту містить наступні значення {string} у полі {string}")
+    public void verifyApiHasValuesInField(String fieldValue, String fieldName) {
+        var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
+        assertThatJson(actualResult).as("Такого поля не існує в json-і:")
+                .inPath("$.." + fieldName).isPresent();
+        assertThatJson(actualResult).as("Дані в полі не співпадають:")
+                .inPath("$.." + fieldName).isArray().contains(fieldValue);
     }
 
     private List<Integer> getSuccessStatuses() {
