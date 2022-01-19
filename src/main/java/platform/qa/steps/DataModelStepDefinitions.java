@@ -37,9 +37,11 @@ public class DataModelStepDefinitions {
     }
 
     @Тоді("дата модель повертає json з файлу {string}")
-    public void verifyDataModelReturnJsonFromFileWithData(String jsonFileName) {
+    public void verifyDataModelReturnJsonFromFileWithData(String jsonFilePath) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
-        String expectedJsonText = FileUtils.readFromFile("src/test/resources/data/json/", jsonFileName);
+        String filePath = getFilePath(jsonFilePath);
+        String jsonFileName = getJsonFileName(jsonFilePath);
+        String expectedJsonText = FileUtils.readFromFile(filePath, jsonFileName);
         assertThatJson(actualResult).as("Дані не співпадають:").isEqualTo(expectedJsonText);
     }
 
@@ -51,10 +53,29 @@ public class DataModelStepDefinitions {
     }
 
     @Тоді("дата модель повертає точно заданий json з файлу {string}, ігноруючі невказані")
-    public void verifyDataModelReturnJsonFromFileWithDataFromExpected(String jsonFileName) {
+    public void verifyDataModelReturnJsonFromFileWithDataFromExpected(String jsonFilePath) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
-        String expectedJsonText = FileUtils.readFromFile("src/test/resources/data/json/", jsonFileName);
+        String filePath = getFilePath(jsonFilePath);
+        String jsonFileName = getJsonFileName(jsonFilePath);
+        String expectedJsonText = FileUtils.readFromFile(filePath, jsonFileName);
         assertThatJson(actualResult).as("Дані не співпадають:")
                 .when(IGNORING_EXTRA_FIELDS).isEqualTo(expectedJsonText);
+    }
+
+    private String getJsonFileName(String jsonFilePath) {
+        String jsonFileName = jsonFilePath;
+        if (jsonFilePath.contains("/")) {
+            jsonFileName = jsonFilePath.substring(jsonFilePath.lastIndexOf("/") + 1);
+        }
+        return jsonFileName;
+    }
+
+    private String getFilePath(String jsonFilePath) {
+        String endPath = "";
+        if (jsonFilePath.contains("/")) {
+            String endPathTmp = jsonFilePath.substring(0, jsonFilePath.lastIndexOf("/"));
+            endPath = endPathTmp.startsWith("/") ? endPathTmp.substring(1) : endPathTmp;
+        }
+        return "src/test/resources/data/json/" + endPath;
     }
 }
