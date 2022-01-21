@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <common-qa-clients.version>1.1.37-SNAPSHOT</common-qa-clients.version>
         <allure.version>2.17.2</allure.version>
-        <aspectj.version>1.9.6</aspectj.version>
+        <aspectj.version>1.9.7</aspectj.version>
         <cucumber.version>7.2.2</cucumber.version>
         <junit.version>5.8.2</junit.version>
     </properties>
