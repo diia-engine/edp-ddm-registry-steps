@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 
 public class RestApiStepDefinitions {
-    private static Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
+    private Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
     private TestContext testContext;
 
     public RestApiStepDefinitions(TestContext testContext) {

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DataModelStepDefinitions {
-    private static Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
+    private Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
     private TestContext testContext;
 
     public DataModelStepDefinitions(TestContext testContext) {
