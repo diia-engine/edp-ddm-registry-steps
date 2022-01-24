@@ -12,24 +12,20 @@ public class BusinessProcess {
     public List<ServiceTask> serviceTask;
     public String id;
     public String name;
-    public boolean isExecutable;
-    public String text;
 
     @Getter
     @Setter
-    public class UserTask {
+    public static class UserTask {
         public String id;
         public String name;
         public String formKey;
         public String assignee;
-        public String text;
     }
 
     @Getter
     @Setter
-    public class ServiceTask {
+    public static class ServiceTask {
         public String id;
         public String name;
-        public String text;
     }
 }

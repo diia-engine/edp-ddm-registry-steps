@@ -12,7 +12,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <common-qa-clients.version>1.1.41-SNAPSHOT</common-qa-clients.version>
+        <common-qa-clients.version>1.1.42-SNAPSHOT</common-qa-clients.version>
         <allure.version>2.17.2</allure.version>
         <aspectj.version>1.9.7</aspectj.version>
         <cucumber.version>7.2.2</cucumber.version>
@@ -140,7 +140,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.13.1</version>
+            <version>2.12.3</version>
         </dependency>
 
     </dependencies>
