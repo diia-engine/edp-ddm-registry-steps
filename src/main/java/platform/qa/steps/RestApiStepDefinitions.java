@@ -9,7 +9,7 @@ import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import lombok.NonNull;
 import platform.qa.base.Config;
-import platform.qa.clients.api.RestApiClient;
+import platform.qa.clients.api.DataFactoryClient;
 import platform.qa.config.ConfigProvider;
 import platform.qa.cucumber.TestContext;
 import platform.qa.enums.Context;
@@ -33,7 +33,7 @@ public class RestApiStepDefinitions {
     @Коли("виконується запит пошуку {string} з параметрами")
     public void executeGetApiWithParameters(@NonNull String path,
                                             @NonNull Map<String, String> queryParams) {
-        var result = new RestApiClient(config.getDataFactoryService())
+        var result = new DataFactoryClient(config.getDataFactoryService())
                 .sendGetWithParams(path, queryParams)
                 .extract()
                 .response()
@@ -44,7 +44,7 @@ public class RestApiStepDefinitions {
 
     @Коли("виконується запит пошуку {string} без параметрів")
     public void executeGetApiWithoutParameters(String path) {
-        var result = new RestApiClient(config.getDataFactoryService())
+        var result = new DataFactoryClient(config.getDataFactoryService())
                 .get(path)
                 .then()
                 .statusCode(isIn(getSuccessStatuses()))
