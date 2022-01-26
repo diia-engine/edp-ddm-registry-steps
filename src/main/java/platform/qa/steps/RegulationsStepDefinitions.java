@@ -69,7 +69,7 @@ public class RegulationsStepDefinitions {
         testContext.getScenarioContext().setContext(Context.API_FORM_KEY_LIST, formTitles);
     }
 
-    @Тоді("виконується перевірка, що всі необхідні форми процесів розгорнуті на оточенні")
+    @Тоді("кількість та назви всіх необхідних та розгорнутих форм на оточенні співпадають")
     public void checkIfAllBpmnFormsWereDeployed() {
         List<String> expectedForms =
                 (List<String>) testContext.getScenarioContext().getContext(Context.BPMN_FORM_KEY_LIST);
