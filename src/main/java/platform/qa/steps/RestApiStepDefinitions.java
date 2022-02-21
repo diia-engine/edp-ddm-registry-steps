@@ -1,7 +1,7 @@
 package platform.qa.steps;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.in;
 
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Тоді;
@@ -45,7 +45,7 @@ public class RestApiStepDefinitions {
         var result = new DataFactoryClient(registryConfig.getDataFactory(), registryConfig.getDigitalSignatureOps())
                 .get(path)
                 .then()
-                .statusCode(isIn(getSuccessStatuses()))
+                .statusCode(in(getSuccessStatuses()))
                 .extract()
                 .response()
                 .jsonPath()
