@@ -8,20 +8,18 @@ import io.cucumber.java.uk.Тоді;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import lombok.NonNull;
-import platform.qa.base.Config;
-import platform.qa.clients.api.DataFactoryClient;
-import platform.qa.config.ConfigProvider;
+import platform.qa.DataFactoryClient;
+import platform.qa.configuration.MasterConfig;
+import platform.qa.configuration.RegistryConfig;
 import platform.qa.cucumber.TestContext;
 import platform.qa.enums.Context;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import org.springframework.http.HttpStatus;
+import org.apache.http.HttpStatus;
 
 public class RestApiStepDefinitions {
-    private Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
+    private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
     private TestContext testContext;
 
     public RestApiStepDefinitions(TestContext testContext) {
@@ -33,7 +31,7 @@ public class RestApiStepDefinitions {
     @Коли("виконується запит пошуку {string} з параметрами")
     public void executeGetApiWithParameters(@NonNull String path,
                                             @NonNull Map<String, String> queryParams) {
-        var result = new DataFactoryClient(config.getDataFactoryService())
+        var result = new DataFactoryClient(registryConfig.getDataFactory(), registryConfig.getDigitalSignatureOps())
                 .sendGetWithParams(path, queryParams)
                 .extract()
                 .response()
@@ -44,7 +42,7 @@ public class RestApiStepDefinitions {
 
     @Коли("виконується запит пошуку {string} без параметрів")
     public void executeGetApiWithoutParameters(String path) {
-        var result = new DataFactoryClient(config.getDataFactoryService())
+        var result = new DataFactoryClient(registryConfig.getDataFactory(), registryConfig.getDigitalSignatureOps())
                 .get(path)
                 .then()
                 .statusCode(isIn(getSuccessStatuses()))
@@ -65,9 +63,8 @@ public class RestApiStepDefinitions {
     }
 
     private List<Integer> getSuccessStatuses() {
-        return Arrays.stream(HttpStatus.values())
-                .filter(httpStatus -> httpStatus.toString().startsWith("20"))
-                .map(HttpStatus::value)
-                .collect(Collectors.toList());
+        return List.of(HttpStatus.SC_CREATED, HttpStatus.SC_ACCEPTED, HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION,
+                HttpStatus.SC_NO_CONTENT, HttpStatus.SC_RESET_CONTENT, HttpStatus.SC_PARTIAL_CONTENT,
+                HttpStatus.SC_MULTI_STATUS);
     }
 }

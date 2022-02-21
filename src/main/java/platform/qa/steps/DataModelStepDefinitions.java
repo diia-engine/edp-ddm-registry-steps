@@ -6,9 +6,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Тоді;
-import platform.qa.base.Config;
 import platform.qa.base.FileUtils;
-import platform.qa.config.ConfigProvider;
+import platform.qa.configuration.MasterConfig;
+import platform.qa.configuration.RegistryConfig;
 import platform.qa.cucumber.TestContext;
 import platform.qa.enums.Context;
 
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DataModelStepDefinitions {
-    private Config config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
+    private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
     private TestContext testContext;
 
     public DataModelStepDefinitions(TestContext testContext) {
@@ -25,7 +25,7 @@ public class DataModelStepDefinitions {
 
     @Дано("розгорнута модель даних з переліком таблиць та згенерованими запитами доступу та пошуку даних")
     public void verifyDataFactoryInit() {
-        assertThat(config.getDataFactoryService().getUrl())
+        assertThat(registryConfig.getDataFactory().getUrl())
                 .as("Модель даних не розгорнута!!!")
                 .isNotNull();
     }

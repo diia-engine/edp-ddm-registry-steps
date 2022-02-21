@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-public class Mapper {
+public class Convertor {
 
     public static XmlMapper getXmlObjectMapper() {
         XmlMapper xmlMapper = new XmlMapper();

@@ -20,5 +20,21 @@
         "Registry Officers"
       ]
     }
+  },
+  "auto-user-bpms": {
+    "login": "demo",
+    "realm": "-admin",
+    "clientId": "camunda-cockpit",
+    "realmRoles": [
+      "camunda-admin"
+    ],
+    "realmClientsDictionary": {
+      "admin": [
+        {
+          "clientId": "camunda-cockpit"
+        }
+      ]
+    },
+    "attributes": {}
   }
 }

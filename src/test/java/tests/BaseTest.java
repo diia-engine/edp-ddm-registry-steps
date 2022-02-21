@@ -1,17 +1,17 @@
 package tests;
 
-import platform.qa.base.Config;
-import platform.qa.config.ConfigProvider;
+import platform.qa.configuration.MasterConfig;
+import platform.qa.configuration.RegistryConfig;
 
 import org.junit.jupiter.api.BeforeAll;
 
 public abstract class BaseTest {
 
-    protected static Config config;
+    protected static RegistryConfig registryConfig;
 
     @BeforeAll
     public static void setup() {
-        config = (Config) ConfigProvider.getInstance().getConfig(Config.class);
+        registryConfig = MasterConfig.getInstance().getRegistryConfig();
 
     }
 }
