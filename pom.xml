@@ -17,7 +17,7 @@
         <junit.version>5.8.2</junit.version>
         <json-unit-assertj.version>2.28.0</json-unit-assertj.version>
         
-        <platform-qa-config.version>1.5.11-SNAPSHOT</platform-qa-config.version>
+        <platform-qa-config.version>1.5.12-SNAPSHOT</platform-qa-config.version>
         <platform-qa-utils.version>1.5.0-SNAPSHOT</platform-qa-utils.version>
         <global-qa-entities.version>1.5.6-SNAPSHOT</global-qa-entities.version>
         <keycloak-qa-client.version>1.5.5-SNAPSHOT</keycloak-qa-client.version>
