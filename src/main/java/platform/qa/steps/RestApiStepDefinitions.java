@@ -22,6 +22,7 @@ public class RestApiStepDefinitions {
     private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
     private TestContext testContext;
 
+
     public RestApiStepDefinitions(TestContext testContext) {
         this.testContext = testContext;
         RestAssured.defaultParser = Parser.JSON;
@@ -56,10 +57,15 @@ public class RestApiStepDefinitions {
     @Тоді("результат запиту містить наступні значення {string} у полі {string}")
     public void verifyApiHasValuesInField(String fieldValue, String fieldName) {
         var actualResult = (List<Map>) testContext.getScenarioContext().getContext(Context.API_RESULT_LIST);
-        assertThatJson(actualResult).as("Такого поля не існує в json-і:")
-                .inPath("$.." + fieldName).isPresent();
-        assertThatJson(actualResult).as("Дані в полі не співпадають:")
-                .inPath("$.." + fieldName).isArray().contains(fieldValue);
+        assertThatJson(actualResult)
+                .as("Такого поля не існує в json-і:")
+                .inPath("$.." + fieldName)
+                .isPresent();
+        assertThatJson(actualResult)
+                .as("Дані в полі не співпадають:")
+                .inPath("$.." + fieldName)
+                .isArray()
+                .contains(fieldValue);
     }
 
     private List<Integer> getSuccessStatuses() {

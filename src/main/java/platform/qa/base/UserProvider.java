@@ -14,10 +14,19 @@ public class UserProvider {
     private final RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
 
     private AtomicReference<User> dataUser = new AtomicReference<>();
+    private AtomicReference<User> registryUser = new AtomicReference<>();
+
 
     public User getDataUser() {
         return dataUser.updateAndGet((user) -> {
             User currentUser = registryConfig.initUser(user, "auto-user-data");
+            return registryConfig.refreshUserToken(currentUser);
+        });
+    }
+
+    public User getUserByName(String userName) {
+        return registryUser.updateAndGet((user) -> {
+            User currentUser = registryConfig.initUser(user, userName);
             return registryConfig.refreshUserToken(currentUser);
         });
     }
