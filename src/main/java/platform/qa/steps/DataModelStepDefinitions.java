@@ -76,6 +76,6 @@ public class DataModelStepDefinitions {
             String endPathTmp = jsonFilePath.substring(0, jsonFilePath.lastIndexOf("/"));
             endPath = endPathTmp.startsWith("/") ? endPathTmp.substring(1) : endPathTmp;
         }
-        return "src/test/resources/data/json/" + endPath;
+        return "src/test/resources/data/" + endPath;
     }
 }

@@ -17,6 +17,7 @@ import platform.qa.enums.Context;
 import platform.qa.git.JgitClient;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -82,7 +83,8 @@ public class RegulationsStepDefinitions {
 
     private List<String> getFormKeysFromBpmnFiles(List<File> bpmnFiles) {
         List<BusinessProcess> businessProcesses = bpmnFiles.stream()
-                .map(file -> Convertor.convertPartOfXmlFileToObject(file, "process", BusinessProcess.class))
+                .map(file -> Convertor.convertPartOfXmlFileToObject(file, "process", BusinessProcess[].class))
+                .flatMap(Arrays::stream)
                 .collect(Collectors.toList());
         assertThat(businessProcesses).as("Файлів процесів немає в папці target:").hasSizeGreaterThan(0);
 
