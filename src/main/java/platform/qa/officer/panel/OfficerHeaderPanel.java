@@ -2,6 +2,7 @@ package platform.qa.officer.panel;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.page;
 
 import io.qameta.allure.Step;
@@ -26,7 +27,7 @@ public class OfficerHeaderPanel extends OfficerBasePage {
     SelenideElement myServicesLink =
             $(By.xpath("//div[@data-xpath='headerLinks']//a[contains(@href,'process-instance-list')]"));
     SelenideElement myTasksLink = $(By.xpath("//div[@data-xpath='headerLinks']//a[contains(@href,'user-tasks-list')]"));
-
+    SelenideElement userInfoLink = $(By.xpath("//div[@data-xpath='headerUserInfo']//span//span"));
 
     public OfficerHeaderPanel() {
         loadingPage();
@@ -36,14 +37,14 @@ public class OfficerHeaderPanel extends OfficerBasePage {
     @Step("Перевірка хедеру")
     public OfficerHeaderPanel checkHeaderHasLink() {
         headerName.shouldBe(visible).shouldHave(Attribute.attribute("href"));
-        return this;
+        return page(new OfficerHeaderPanel());
     }
 
     @Step("Натискання на хедері")
-    public DashboardPage clickOnHeaderName() {
+    public OfficerHeaderPanel clickOnHeaderName() {
         String href = headerName.shouldBe(visible).getAttribute("href");
-        WebDriverRunner.getWebDriver().get(href);
-        return page(new DashboardPage());
+        open(href);
+        return  page(new OfficerHeaderPanel());
     }
 
     @Step("Натискання посилання Головна")
@@ -68,5 +69,12 @@ public class OfficerHeaderPanel extends OfficerBasePage {
     public AvailableServicesPage clickOnAvailableServicesLink() {
         availableServicesLink.shouldBe(visible).click();
         return page(new AvailableServicesPage());
+    }
+
+    @Step("Натискання посилання з інформацією користувача")
+    public UserInfoPopUp clickOnUserInfoLink() {
+        userInfoLink.shouldBe(visible);
+        userInfoLink.click();
+        return page(new UserInfoPopUp());
     }
 }

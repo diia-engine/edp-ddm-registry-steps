@@ -1,8 +1,10 @@
 package platform.qa.steps;
 
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static platform.qa.cucumber.Hooks.globalDriverSetup;
 
 import io.cucumber.java.Before;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.Scenario;
@@ -10,6 +12,7 @@ import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
 import io.cucumber.java.uk.Тоді;
+import io.qameta.allure.Step;
 import platform.qa.base.UserProvider;
 import platform.qa.entities.FieldData;
 import platform.qa.enums.FieldType;
@@ -18,6 +21,7 @@ import platform.qa.officer.pages.DashboardPage;
 import platform.qa.officer.pages.MyTasksPage;
 import platform.qa.officer.pages.SignTaskPage;
 import platform.qa.officer.pages.TaskPage;
+import platform.qa.officer.panel.OfficerHeaderPanel;
 import platform.qa.officer.steps.LoginSteps;
 
 import java.util.Arrays;
@@ -29,11 +33,6 @@ import java.util.NoSuchElementException;
 public class OfficerCabinetStepDefinitions {
 
     private UserProvider users = UserProvider.getInstance();
-
-    @Before
-    public void setup(Scenario scenario){
-        globalDriverSetup(scenario);
-    }
 
     @DataTableType
     public FieldData fieldEntry(Map<String, String> entry) {
@@ -121,4 +120,11 @@ public class OfficerCabinetStepDefinitions {
                 .checkTaskExistsByTaskName(taskName);
     }
 
+    @Та("користувач закриває кабінет чиновника")
+    public void logoutOfficerPortal() {
+        new OfficerHeaderPanel()
+                .clickOnHeaderName()
+                .clickOnUserInfoLink()
+                .clickLogOutButton();
+    }
 }
