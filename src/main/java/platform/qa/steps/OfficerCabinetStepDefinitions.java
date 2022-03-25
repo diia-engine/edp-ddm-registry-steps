@@ -29,7 +29,7 @@ public class OfficerCabinetStepDefinitions {
 
     @DataTableType
     public FieldData fieldEntry(Map<String, String> entry) {
-        return new FieldData(entry.get("fieldName"), getFieldType(entry.get("fieldType")), entry.get("fieldData"));
+        return new FieldData(entry.get("name"), getFieldType(entry.get("type")), entry.get("value"));
     }
 
     private FieldType getFieldType(String entry) {
