@@ -17,6 +17,7 @@ public class Hooks {
 
     protected static RunUITestConfiguration runUITestConfig = RunUITestConfiguration.getInstance();
 
+    @BeforeAll
     public static void globalDriverSetup(Scenario scenario) {
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide()
