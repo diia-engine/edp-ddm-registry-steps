@@ -23,7 +23,7 @@
         <keycloak-qa-client.version>1.5.5-SNAPSHOT</keycloak-qa-client.version>
         <openshift-qa-client.version>1.5.5-SNAPSHOT</openshift-qa-client.version>
         <protocols-qa-client.version>1.5.5-SNAPSHOT</protocols-qa-client.version>
-        <platform-qa-ui-reporting.version>1.5.1-SNAPSHOT</platform-qa-ui-reporting.version>
+        <platform-qa-ui-reporting.version>1.5.4-SNAPSHOT</platform-qa-ui-reporting.version>
         <data-factory-qa-client.version>1.5.5-SNAPSHOT</data-factory-qa-client.version>
         <git-qa-client.version>1.5.5-SNAPSHOT</git-qa-client.version>
         <form-management-steps.version>1.5.1-SNAPSHOT</form-management-steps.version>
