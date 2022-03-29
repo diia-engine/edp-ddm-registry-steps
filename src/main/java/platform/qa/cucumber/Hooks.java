@@ -3,9 +3,7 @@ package platform.qa.cucumber;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
-import io.cucumber.java.Scenario;
 import io.qameta.allure.selenide.AllureSelenide;
 import platform.qa.configuration.RunUITestConfiguration;
 
@@ -28,11 +26,6 @@ public class Hooks {
         if (runUITestConfig.isRemoteRunEnabled()) {
             Configuration.headless = true;
         }
-    }
-
-    @Before
-    public void setScenarioName(Scenario scenario) {
-        Configuration.browserCapabilities.setCapability("name", scenario.getName());
     }
 
     @After
