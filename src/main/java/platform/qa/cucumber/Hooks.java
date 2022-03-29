@@ -24,11 +24,9 @@ public class Hooks {
                         .savePageSource(false));
         Configuration.browserSize = "1920x1080";
         Configuration.screenshots = true;
-        Configuration.browserCapabilities.setCapability("enableVNC", true);
         Configuration.timeout = 15000;
         if (runUITestConfig.isRemoteRunEnabled()) {
             Configuration.headless = true;
-            Configuration.browserSize = "1920x1080";
         }
     }
 
