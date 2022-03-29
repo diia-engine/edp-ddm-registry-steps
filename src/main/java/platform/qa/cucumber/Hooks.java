@@ -27,9 +27,8 @@ public class Hooks {
         Configuration.browserCapabilities.setCapability("enableVNC", true);
         Configuration.timeout = 15000;
         if (runUITestConfig.isRemoteRunEnabled()) {
-            Configuration.browserCapabilities.setCapability("enableVideo", true);
-            Configuration.browserCapabilities.setCapability("videoCodec", "mpeg4");
-            Configuration.remote = "https://wd-hub-moon.apps.cicd2.mdtu-ddm.projects.epam.com/wd/hub";
+            Configuration.headless = true;
+            Configuration.browserSize = "1920x1080";
         }
     }
 
