@@ -10,7 +10,6 @@ import io.qameta.allure.selenide.AllureSelenide;
 import platform.qa.configuration.RunUITestConfiguration;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 
 public class Hooks {
@@ -18,7 +17,7 @@ public class Hooks {
     protected static RunUITestConfiguration runUITestConfig = RunUITestConfiguration.getInstance();
 
     @BeforeAll
-    public static void globalDriverSetup(Scenario scenario) {
+    public static void beforeAll() {
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide()
                         .screenshots(true)

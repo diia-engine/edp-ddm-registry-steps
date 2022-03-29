@@ -1,18 +1,11 @@
 package platform.qa.steps;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static platform.qa.cucumber.Hooks.globalDriverSetup;
-
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
-import io.cucumber.java.Scenario;
 import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
 import io.cucumber.java.uk.Тоді;
-import io.qameta.allure.Step;
 import platform.qa.base.UserProvider;
 import platform.qa.entities.FieldData;
 import platform.qa.enums.FieldType;
