@@ -31,6 +31,10 @@ public class OfficerCabinetStepDefinitions {
     private UserProvider users = UserProvider.getInstance();
     private TestContext testContext;
 
+    public OfficerCabinetStepDefinitions(TestContext testContext) {
+        this.testContext = testContext;
+    }
+
     @DataTableType
     public FieldData fieldEntry(Map<String, String> entry) {
         return new FieldData(entry.get("name"), getFieldType(entry.get("type")), entry.get("value"));
