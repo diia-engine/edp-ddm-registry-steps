@@ -1,5 +1,7 @@
 package platform.qa.steps;
 
+import static platform.qa.enums.Context.OFFICER_USER_LOGIN;
+
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.uk.Дано;
@@ -7,6 +9,7 @@ import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
 import io.cucumber.java.uk.Тоді;
 import platform.qa.base.UserProvider;
+import platform.qa.cucumber.TestContext;
 import platform.qa.entities.FieldData;
 import platform.qa.enums.FieldType;
 import platform.qa.officer.pages.AvailableServicesPage;
@@ -26,6 +29,7 @@ import java.util.NoSuchElementException;
 public class OfficerCabinetStepDefinitions {
 
     private UserProvider users = UserProvider.getInstance();
+    private TestContext testContext;
 
     @DataTableType
     public FieldData fieldEntry(Map<String, String> entry) {
@@ -53,26 +57,27 @@ public class OfficerCabinetStepDefinitions {
         return value.equals("активна");
     }
 
-    @Дано("користувач {string} успішно відкрив кабінет чиновника")
+    @Дано("користувач {string} успішно увійшов у кабінет посадової особи")
     public void verifyOfficerOpenDashboardPage(String userName) {
         new LoginSteps()
                 .loginOfficerPortal(users.getUserByName(userName));
+        testContext.getScenarioContext().setContext(OFFICER_USER_LOGIN, users.getUserByName(userName).getLogin());
     }
 
-    @Дано("має доступ до процесу {string}")
+    @Дано("бачить доступний процес {string}")
     public void verifyProcessAvailable(String processName) {
         new DashboardPage()
                 .clickOnAvailableServices()
                 .checkProcessByName(processName);
     }
 
-    @Коли("користувач запускає процес {string}")
+    @Коли("користувач ініціює процес {string}")
     public void verifyUserStartProcess(String processName) {
         new AvailableServicesPage()
                 .clickOnProcessByName(processName);
     }
 
-    @Тоді("відображається форма {string} із кнопкою \"Далі\" яка {booleanValue}")
+    @Коли("бачить форму {string} із кнопкою \"Далі\" яка {booleanValue}")
     public void verifyDisplayFormName(String formName, boolean isEnabled) {
         new TaskPage()
                 .checkTaskName(TaskPage.class, formName)
@@ -93,7 +98,7 @@ public class OfficerCabinetStepDefinitions {
                 .submitForm();
     }
 
-    @Тоді("відображається форма {string} із заповненими даними без можливості редагування")
+    @Коли("пересвідчується в правильному відображенні введених даних на формі {string}")
     public void checkSignForm(String formName) {
         new TaskPage()
                 .checkTaskName(TaskPage.class, formName)
@@ -106,7 +111,13 @@ public class OfficerCabinetStepDefinitions {
                 .signTask(users.getUserByName(userName));
     }
 
-    @Тоді("задача {string} виконана")
+    @Коли("підписує їх")
+    public void signFormUserFromContext(String userName) {
+        new SignTaskPage()
+                .signTask(users.getUserByName((String) testContext.getScenarioContext().getContext(OFFICER_USER_LOGIN)));
+    }
+
+    @Тоді("процес закінчено успішно й задача {string} відображається як виконана у переліку задач")
     public void verifyTaskCompleted(String taskName) {
         new MyTasksPage().checkNotificationMessage(taskName)
                 .clickOnProvisionedTasksTab()
