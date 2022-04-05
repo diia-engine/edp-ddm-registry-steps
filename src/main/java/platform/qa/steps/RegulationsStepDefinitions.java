@@ -1,17 +1,19 @@
 package platform.qa.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Тоді;
 import platform.qa.api.FormManagementProviderApi;
+import platform.qa.api.ProcessDefinitionApi;
 import platform.qa.base.Convertor;
-import platform.qa.base.UserProvider;
 import platform.qa.configuration.MasterConfig;
 import platform.qa.configuration.RegistryConfig;
 import platform.qa.cucumber.TestContext;
 import platform.qa.entities.BusinessProcess;
+import platform.qa.entities.Definition;
 import platform.qa.entities.Repository;
 import platform.qa.enums.Context;
 import platform.qa.git.JgitClient;
@@ -27,9 +29,8 @@ import org.apache.log4j.Logger;
 
 public class RegulationsStepDefinitions {
     private static Logger logger = Logger.getLogger(RegulationsStepDefinitions.class);
-    private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
-    private UserProvider users = UserProvider.getInstance();
 
+    private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
     private Repository gerritRepo = new Repository(registryConfig.getGerrit(), "registry-regulations", "master");
     private TestContext testContext;
 
@@ -37,7 +38,7 @@ public class RegulationsStepDefinitions {
         this.testContext = testContext;
     }
 
-    @Дано("розгорнутий регламент реєстру з необхідними процесами")
+    @Дано("регламент реєстру розгорнуто")
     public void verifyRegistryRegulationsLoad() {
         List<File> bpmnFiles;
         Object bpmn = testContext.getScenarioContext().getContext(Context.BPMN_FILE_NAMES);
@@ -50,35 +51,61 @@ public class RegulationsStepDefinitions {
         assertThat(bpmnFiles).as("Регламент не розгорнувся:").hasSizeGreaterThan(0);
     }
 
-    @Коли("виконується пошук необхідних форм для розгорнутих процесів")
-    public void getFormsFromBpmnFiles() {
+    @Коли("адміністратор регламенту отримує наявні бізнес процеси та відповідні їм форми через сервіси платформи")
+    public void getProcessesAndForms() {
         List<File> bpmnFiles = (List<File>) testContext.getScenarioContext().getContext(Context.BPMN_FILE_NAMES);
         assertThat(bpmnFiles).as("В розгорнутому регламенті немає списку bpmn файлів процесів:").hasSizeGreaterThan(0);
 
         List<String> formKeys = getFormKeysFromBpmnFiles(bpmnFiles);
         testContext.getScenarioContext().setContext(Context.BPMN_FORM_KEY_LIST, formKeys);
+
+        List<String> processNames = getProcessNamesFromBpmnFiles(bpmnFiles);
+        testContext.getScenarioContext().setContext(Context.BPMN_PROCESS_NAME_LIST, processNames);
+
+        List<String> deployedFormKeys = getDeployedFormsFromProvider();
+        testContext.getScenarioContext().setContext(Context.API_FORM_KEY_LIST, deployedFormKeys);
+
+        List<String> deployedProcessNames = getDeployedProcessesFromBpms();
+        testContext.getScenarioContext().setContext(Context.API_PROCESS_NAME_LIST, deployedProcessNames);
     }
 
-    @Коли("виконується пошук розгорнутих форм на оточенні")
-    public void getDeployedFormsFromProvider() {
+    private List<String> getDeployedProcessesFromBpms() {
+        logger.info("Start getting processes from Business Process Management!");
+        List<Definition> deployedProcesses =
+                new ProcessDefinitionApi(registryConfig.getBpms()).getAllDefinitions();
+        return deployedProcesses.stream().map(Definition::getName).collect(Collectors.toList());
+    }
+
+    private List<String> getDeployedFormsFromProvider() {
         logger.info("Start getting forms from Form Provider!");
         List<Map> deployedForms =
                 new FormManagementProviderApi(registryConfig.getFormManagementProvider()).getAllForms();
-        List<String> formTitles =
-                deployedForms.stream().map(form -> form.get("name").toString()).collect(Collectors.toList());
-        testContext.getScenarioContext().setContext(Context.API_FORM_KEY_LIST, formTitles);
+        return deployedForms.stream().map(form -> form.get("name").toString()).collect(Collectors.toList());
     }
 
-    @Тоді("кількість та назви всіх необхідних та розгорнутих форм на оточенні співпадають")
+    @Тоді("він переконується, що бізнес процеси та їх форми доступні кінцевому користувачу")
     public void checkIfAllBpmnFormsWereDeployed() {
         List<String> expectedForms =
                 (List<String>) testContext.getScenarioContext().getContext(Context.BPMN_FORM_KEY_LIST);
         List<String> actualForms =
                 (List<String>) testContext.getScenarioContext().getContext(Context.API_FORM_KEY_LIST);
-        assertThat(actualForms).as("Кількість розгорнутих форм на оточенні менша ніж в registry-regulations "
-                + "репозиторії:").hasSizeGreaterThanOrEqualTo(expectedForms.size());
-        assertThat(actualForms).as("Форми розгорнені на оточенні не співпадають з усіма необхідними в "
-                + "registry-regulations репозиторії").containsAll(expectedForms);
+
+        List<String> expectedProcesses =
+                (List<String>) testContext.getScenarioContext().getContext(Context.BPMN_PROCESS_NAME_LIST);
+        List<String> actualProcesses =
+                (List<String>) testContext.getScenarioContext().getContext(Context.API_PROCESS_NAME_LIST);
+
+        assertSoftly(softly -> {
+            softly.assertThat(actualForms).as("Кількість розгорнутих форм на оточенні менша ніж в "
+                    + "registry-regulations репозиторії:").hasSizeGreaterThanOrEqualTo(expectedForms.size());
+            softly.assertThat(actualForms).as("Форми розгорнені на оточенні не співпадають з усіма необхідними в "
+                    + "registry-regulations репозиторії").containsAll(expectedForms);
+
+            softly.assertThat(actualProcesses).as("Кількість розгорнутих процесів на оточенні менша ніж в "
+                    + "registry-regulations репозиторії:").hasSizeGreaterThanOrEqualTo(expectedProcesses.size());
+            softly.assertThat(actualProcesses).as("Процеси розгорнені на оточенні не співпадають з усіма необхідними "
+                    + "в registry-regulations репозиторії").containsAll(expectedProcesses);
+        });
     }
 
     private List<String> getFormKeysFromBpmnFiles(List<File> bpmnFiles) {
@@ -95,6 +122,17 @@ public class RegulationsStepDefinitions {
                                 .distinct()
                                 .collect(Collectors.toList()))
                 ).findFirst().orElseThrow();
+    }
+
+    private List<String> getProcessNamesFromBpmnFiles(List<File> bpmnFiles) {
+        List<String> processNames = bpmnFiles.stream()
+                .map(file -> Convertor.convertPartOfXmlFileToObject(file, "process", BusinessProcess[].class))
+                .flatMap(Arrays::stream)
+                .map(businessProcess -> businessProcess.getName())
+                .collect(Collectors.toList());
+        assertThat(processNames).as("Файлів процесів немає в папці target:").hasSizeGreaterThan(0);
+
+        return processNames;
     }
 
     private List<File> getBpmnFilesFromGerritFolder(String folder, String fileExtension) {

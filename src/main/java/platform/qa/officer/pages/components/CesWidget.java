@@ -1,4 +1,4 @@
-package platform.qa.officer.pages;
+package platform.qa.officer.pages.components;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.exist;
@@ -18,7 +18,7 @@ import org.apache.commons.io.FilenameUtils;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 
-public class CesWidgetComponent extends BasePage {
+public class CesWidget extends BasePage {
     public SelenideElement signIframe = $(xpath("//iframe[@id='sign-widget']"));
     public SelenideElement signIframeTitle = $(xpath("//h1[@id='titleLabel']"));
     public SelenideElement providerSelect = $(xpath("//select[@id='pkCASelect']"));
@@ -31,14 +31,14 @@ public class CesWidgetComponent extends BasePage {
     private static final String PATH_TO_FILE = "src/test/resources/files/";
 
     @Step("Зчитування ключа на формі КЕП")
-    public CesWidgetComponent uploadCustomKey(String key, String password, String provider) {
+    public CesWidget uploadCustomKey(String key, String password, String provider) {
         checkReadKeyFormFields();
         uploadAndReadKey(key, password, provider);
-        return page(new CesWidgetComponent());
+        return page(new CesWidget());
     }
 
     @Step("Перевірка полів форми завантаження ключа КЕП")
-    public CesWidgetComponent checkReadKeyFormFields() {
+    public CesWidget checkReadKeyFormFields() {
         signIframe.shouldBe(exist);
         switchTo().frame(signIframe);
         signIframeTitle.should(Condition.text("Зчитування особистого ключа"), Duration.ofMillis(60000));
@@ -47,7 +47,7 @@ public class CesWidgetComponent extends BasePage {
         keyPasswordInput.shouldBe(Condition.disabled);
         assertThat(readKeyButton.getAttribute("disabled")).isEqualTo("true");
 
-        return page(new CesWidgetComponent());
+        return page(new CesWidget());
     }
 
     @Step("Завантаження особистого ключа КЕП зі считуванням")

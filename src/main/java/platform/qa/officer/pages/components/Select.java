@@ -13,14 +13,14 @@ import static org.openqa.selenium.By.xpath;
 import io.qameta.allure.Step;
 import platform.qa.base.BasePage;
 
-public class SelectComponent extends BasePage {
+public class Select extends BasePage {
 
     private final String selectDropdownPath = "//label[text()[contains(.,'%s')"
             + "]]/following-sibling::div//select/parent::div[contains(@class, 'dropdown')]";
     private String choicesListXPath = "//following-sibling::div[contains(@class,'choices__list--dropdown')]";
     private String itemsXPath = "//div[contains(@id,'item-choice')]/span";
 
-    public SelectComponent() {
+    public Select() {
         loadingPage();
         loadingComponents();
     }

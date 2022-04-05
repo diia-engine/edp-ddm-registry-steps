@@ -11,7 +11,7 @@ import static org.openqa.selenium.By.xpath;
 
 import io.qameta.allure.Step;
 import platform.qa.entities.FieldData;
-import platform.qa.officer.pages.components.SelectComponent;
+import platform.qa.officer.pages.components.Select;
 
 import com.codeborne.selenide.CollectionCondition;
 
@@ -89,7 +89,7 @@ public class TaskPage extends CommonTaskPage {
                     fillInputFieldWithData(fieldData.getName(), fieldData.getValue());
                     break;
                 case SELECT:
-                    new SelectComponent().selectItemFromDropDown(fieldData.getName(), fieldData.getValue());
+                    new Select().selectItemFromDropDown(fieldData.getName(), fieldData.getValue());
                     break;
                 case DATETIME:
                     selectDataFromDateTime(fieldData.getName(), fieldData.getValue());

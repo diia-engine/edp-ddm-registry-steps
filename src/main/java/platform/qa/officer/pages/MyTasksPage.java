@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.openqa.selenium.By.xpath;
 
 import io.qameta.allure.Step;
-import platform.qa.officer.pages.components.TableComponent;
+import platform.qa.officer.pages.components.Table;
 
 import org.openqa.selenium.By;
 import com.codeborne.selenide.Condition;
@@ -29,7 +29,7 @@ public class MyTasksPage extends OfficerBasePage {
 
     @Step("Перевірка присутності обраної задачі за назвою у переліку завершених задач {taskName}")
     public MyTasksPage checkTaskExistsByTaskName(String taskName) {
-        new TableComponent()
+        new Table()
                 .getRowFromTableByTaskName(taskName)
                 .shouldHave(sizeGreaterThan(0)
                         .because(String.format("Задача \"%s\" відсутня у черзі задач", taskName)));

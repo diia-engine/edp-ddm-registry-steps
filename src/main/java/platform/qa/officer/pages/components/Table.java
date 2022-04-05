@@ -11,11 +11,11 @@ import platform.qa.base.BasePage;
 import org.openqa.selenium.WebElement;
 import com.codeborne.selenide.ElementsCollection;
 
-public class TableComponent extends BasePage {
+public class Table extends BasePage {
 
     private ElementsCollection tableRows = $$(xpath("//tbody//tr[contains(@class, 'MuiTableRow-root')]"));
 
-    public TableComponent() {
+    public Table() {
         loadingPage();
         loadingComponents();
     }
