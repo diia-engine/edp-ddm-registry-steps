@@ -17,9 +17,9 @@ import com.codeborne.selenide.CollectionCondition;
 
 public class TaskPage extends CommonTaskPage {
 
-    private final String inputPath = "//label[text()[contains(.,'%s')]]/following-sibling::div/input[@type='text']";
-    private final String radioButtonPath = "//span[text()[contains(.,'%s')]]/preceding-sibling::input[@type='radio']";
-    private final String checkboxPath = "//span[text()[contains(.,'%s')]]/preceding-sibling::input[@type='checkbox']";
+    private final String inputPath = "//label[text()[contains(.,'%s')]]/following-sibling::div//input[@type='text']";
+    private final String radioButtonPath = "//span[text()[contains(.,'%s')]]/preceding-sibling::span//input[@type='radio']";
+    private final String checkboxPath = "//span[text()[contains(.,'%s')]]/parent::span/preceding-sibling::span//input[@type='checkbox']";
     private final String dateTimePath = "//label[text()[contains(.,'%s')]]/following-sibling::div//input[@type='text']";
 
     public TaskPage() {
