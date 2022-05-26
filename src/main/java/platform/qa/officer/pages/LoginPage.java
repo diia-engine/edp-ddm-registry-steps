@@ -15,7 +15,7 @@ import com.codeborne.selenide.SelenideElement;
 public class LoginPage extends OfficerBasePage {
 
     SelenideElement authButton = $(xpath("//button[@data-xpath='loginButton']"));
-    String loginUrl = baseUrl + "/officer/login";
+    String loginUrl = baseUrl + "officer/login";
 
     @Step("Перейти до сторінки автентифікації з КЕП у кабінеті чиновника")
     public AuthWithCesPage openAuthWithCesPage() {
