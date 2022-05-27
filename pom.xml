@@ -28,8 +28,8 @@
         <platform-qa-ui-reporting.version>1.6.0.2</platform-qa-ui-reporting.version>
         <data-factory-qa-client.version>1.6.0.17</data-factory-qa-client.version>
         <git-qa-client.version>1.6.0.17</git-qa-client.version>
-        <form-management-steps.version>1.6.0.19</form-management-steps.version>
-        <bpms-steps.version>1.6.0.19</bpms-steps.version>
+        <form-management-steps.version>1.6.0.22</form-management-steps.version>
+        <bpms-steps.version>1.6.0.22</bpms-steps.version>
     </properties>
 
     <dependencies>
