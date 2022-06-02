@@ -6,7 +6,7 @@
 
     <groupId>platform.qa</groupId>
     <artifactId>registry-steps</artifactId>
-    <version>1.6.0.7</version>
+    <version>1.6.0.9</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,7 +16,7 @@
         <cucumber-html-formatter.version>17.0.0</cucumber-html-formatter.version>
         <junit.version>5.8.2</junit.version>
         <json-unit-assertj.version>2.28.0</json-unit-assertj.version>
-        <selenide.version>6.1.2</selenide.version>
+        <selenide.version>6.5.1</selenide.version>
         <netty-all.version>4.1.75.Final</netty-all.version>
 
         <platform-qa-config.version>1.6.0.15</platform-qa-config.version>
@@ -28,8 +28,8 @@
         <platform-qa-ui-reporting.version>1.6.0.3</platform-qa-ui-reporting.version>
         <data-factory-qa-client.version>1.6.0.19</data-factory-qa-client.version>
         <git-qa-client.version>1.6.0.19</git-qa-client.version>
-        <form-management-steps.version>1.6.0.26</form-management-steps.version>
-        <bpms-steps.version>1.6.0.26</bpms-steps.version>
+        <form-management-steps.version>1.6.0.28</form-management-steps.version>
+        <bpms-steps.version>1.6.0.28</bpms-steps.version>
     </properties>
 
     <dependencies>

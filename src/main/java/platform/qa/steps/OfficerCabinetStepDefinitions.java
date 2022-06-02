@@ -88,12 +88,24 @@ public class OfficerCabinetStepDefinitions {
                 .checkSubmitButtonState(isEnabled);
     }
 
+    @Коли("поле {string} має значення заповнене автоматично")
+    public void verifyFieldIsFilledWithData(String fieldName) {
+        new TaskPage()
+                .checkFieldIsNotEmpty(fieldName);
+    }
+
     @Коли("користувач заповнює форму даними$")
     public void userFillFormFieldsWithData(List<FieldData> rows) {
         for (FieldData fieldData : rows) {
             new TaskPage()
                     .setFieldsData(fieldData);
         }
+    }
+
+    @Коли("натискає кнопку \"Додати\" у {string}")
+    public void addNewRowToTheTable(String tableName){
+        new TaskPage()
+                .addNewRow(tableName);
     }
 
     @Та("натискає кнопку \"Далі\"")
@@ -116,7 +128,7 @@ public class OfficerCabinetStepDefinitions {
     }
 
     @Коли("підписує їх")
-    public void signFormUserFromContext(String userName) {
+    public void signFormUserFromContext() {
         new SignTaskPage()
                 .signTask(users.getUserByName((String) testContext.getScenarioContext().getContext(OFFICER_USER_LOGIN)));
     }
