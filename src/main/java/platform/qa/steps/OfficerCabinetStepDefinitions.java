@@ -4,6 +4,8 @@ import static platform.qa.enums.Context.OFFICER_USER_LOGIN;
 
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.uk.І;
+import io.cucumber.java.uk.Атакож;
 import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
@@ -30,6 +32,7 @@ public class OfficerCabinetStepDefinitions {
 
     private UserProvider users = UserProvider.getInstance();
     private TestContext testContext;
+    TaskPage taskPage = new TaskPage();
 
     public OfficerCabinetStepDefinitions(TestContext testContext) {
         this.testContext = testContext;
@@ -83,40 +86,40 @@ public class OfficerCabinetStepDefinitions {
 
     @Коли("бачить форму {string} із кнопкою \"Далі\" яка {booleanValue}")
     public void verifyDisplayFormName(String formName, boolean isEnabled) {
-        new TaskPage()
+        taskPage
                 .checkTaskName(TaskPage.class, formName)
                 .checkSubmitButtonState(isEnabled);
     }
 
     @Коли("поле {string} має значення заповнене автоматично")
     public void verifyFieldIsFilledWithData(String fieldName) {
-        new TaskPage()
+        taskPage
                 .checkFieldIsNotEmpty(fieldName);
     }
 
     @Коли("користувач заповнює форму даними$")
     public void userFillFormFieldsWithData(List<FieldData> rows) {
         for (FieldData fieldData : rows) {
-            new TaskPage()
+            taskPage
                     .setFieldsData(fieldData);
         }
     }
 
     @Коли("натискає кнопку \"Додати\" у {string}")
     public void addNewRowToTheTable(String tableName){
-        new TaskPage()
+        taskPage
                 .addNewRow(tableName);
     }
 
     @Та("натискає кнопку \"Далі\"")
     public void clickButton() {
-        new TaskPage()
+        taskPage
                 .submitForm();
     }
 
     @Коли("пересвідчується в правильному відображенні введених даних на формі {string}")
     public void checkSignForm(String formName) {
-        new TaskPage()
+        taskPage
                 .checkTaskName(TaskPage.class, formName)
                 .checkFieldsAreNotEditable();
     }
@@ -147,4 +150,15 @@ public class OfficerCabinetStepDefinitions {
                 .clickOnUserInfoLink()
                 .clickLogOutButton();
     }
+
+    @І("додає запис до {string} таблиці із даними")
+    public void userFillGridFieldsWithData(String gridName, List<FieldData> rows) {
+        taskPage.clickAddButton(gridName);
+        for (FieldData fieldData : rows) {
+            taskPage.setFieldsData(fieldData);
+        }
+        taskPage
+                .clickSaveButton();
+    }
+
 }

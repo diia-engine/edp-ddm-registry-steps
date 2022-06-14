@@ -13,24 +13,29 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContain
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfElementsToBeMoreThan;
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 import platform.qa.entities.FieldData;
 import platform.qa.officer.pages.components.Select;
 
+import org.apache.hc.core5.http.nio.support.TerminalAsyncServerFilter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class TaskPage extends CommonTaskPage {
 
-    private final String inputPath = "//label[text()[contains(.,'%s')]]/following-sibling::div//input[@type='text']";
-    private final String radioButtonPath = "//span[text()[contains(.,'%s')"
-            + "]]/preceding-sibling::span//input[@type='radio']";
-    private final String checkboxPath = "//span[text()[contains(.,'%s')"
-            + "]]/parent::span/preceding-sibling::span//input[@type='checkbox']";
-    private final String dateTimePath = "//label[text()[contains(.,'%s')]]/following-sibling::div//input[@type='text']";
-    private final String addNewRowButtonPath = "//label[text()[contains(.,'%s')]]/following-sibling::div//button";
+    @FindBy(xpath = "//div[contains(@role, 'dialog')]//button[contains(@type, 'submit')]")
+    protected WebElement saveButton;
+
+    private final String inputPath = "//label[text()[contains(.,\"%s\")]]/following-sibling::div//input[@type='text']";
+    private final String radioButtonPath = "//span[text()[contains(.,\"%s\")]]/preceding-sibling::span//input[@type='radio']";
+    private final String checkboxPath = "//span[text()[contains(.,\"%s\")]]/parent::span/preceding-sibling::span//input[@type='checkbox']";
+    private final String dateTimePath = "//label[text()[contains(.,\"%s\")]]/following-sibling::div//input[@type='text']";
+    private final String addNewRowButtonPath = "//label[text()[contains(.,\"%s\")]]/following-sibling::div//button";
+    private final String addButton = "//label[text()[contains(.,\"%s\")]]/following-sibling::div//button";
 
     public TaskPage() {
         super();
@@ -43,9 +48,9 @@ public class TaskPage extends CommonTaskPage {
     }
 
     public void fillInputFieldWithData(String fieldName, String fieldData) {
-        WebElement input = driver.findElement(xpath(format(this.inputPath, fieldName)));
-        wait.until(elementToBeClickable(input));
-        input.sendKeys(HOME, chord(SHIFT, END), BACK_SPACE, fieldData);
+        wait
+                .until(presenceOfElementLocated(xpath(format(this.inputPath, fieldName))))
+                .sendKeys(HOME, chord(SHIFT, END), BACK_SPACE, fieldData);
     }
 
 
@@ -115,4 +120,18 @@ public class TaskPage extends CommonTaskPage {
                 .click();
     }
 
+    public void clickAddButton(String gridName) {
+        wait
+                .until(elementToBeClickable(xpath(String.format(addButton, gridName))))
+                .click();
+    }
+
+    public TaskPage clickSaveButton (){
+        wait
+                .until(elementToBeClickable(saveButton))
+                .click();
+        return this;
+    }
+
 }
+

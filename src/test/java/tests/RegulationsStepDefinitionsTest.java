@@ -46,6 +46,7 @@ class RegulationsStepDefinitionsTest extends BaseTest {
 
             softly.assertThat(deployedProcessNames).hasSizeGreaterThan(0);
             softly.assertThat(deployedProcessNames).isNotEmpty();
+
         });
     }
 }
