@@ -1,90 +1,94 @@
 package platform.qa.officer.pages;
 
-import static com.codeborne.selenide.Condition.disabled;
-import static com.codeborne.selenide.Condition.empty;
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.Keys.BACK_SPACE;
+import static org.openqa.selenium.Keys.END;
+import static org.openqa.selenium.Keys.HOME;
+import static org.openqa.selenium.Keys.SHIFT;
+import static org.openqa.selenium.Keys.TAB;
+import static org.openqa.selenium.Keys.chord;
+import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.not;
+import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfElementsToBeMoreThan;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
-import com.codeborne.selenide.Selenide;
-import io.qameta.allure.Step;
-import lombok.SneakyThrows;
 import platform.qa.entities.FieldData;
 import platform.qa.officer.pages.components.Select;
 
-import com.codeborne.selenide.CollectionCondition;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class TaskPage extends CommonTaskPage {
 
     private final String inputPath = "//label[text()[contains(.,'%s')]]/following-sibling::div//input[@type='text']";
-    private final String radioButtonPath = "//span[text()[contains(.,'%s')]]/preceding-sibling::span//input[@type='radio']";
-    private final String checkboxPath = "//span[text()[contains(.,'%s')]]/parent::span/preceding-sibling::span//input[@type='checkbox']";
+    private final String radioButtonPath = "//span[text()[contains(.,'%s')"
+            + "]]/preceding-sibling::span//input[@type='radio']";
+    private final String checkboxPath = "//span[text()[contains(.,'%s')"
+            + "]]/parent::span/preceding-sibling::span//input[@type='checkbox']";
     private final String dateTimePath = "//label[text()[contains(.,'%s')]]/following-sibling::div//input[@type='text']";
     private final String addNewRowButtonPath = "//label[text()[contains(.,'%s')]]/following-sibling::div//button";
 
     public TaskPage() {
-        loadingPage();
-        loadingComponents();
+        super();
     }
 
-    @Step("Перевірка полів задачі на 'read only' властивість")
     public void checkFieldsAreNotEditable() {
-        $$(xpath("//input[contains(@name, 'data')]"))
-                .shouldHave(CollectionCondition.sizeGreaterThan(0))
-                .shouldBe(CollectionCondition
-                        .allMatch("Check all fields are read only",
-                                element -> element.getAttribute("disabled").equals("true")));
+        By fieldPath = xpath("//input[contains(@name, 'data')]");
+        wait.until(numberOfElementsToBeMoreThan(fieldPath, 0));
+        wait.until(attributeContains(fieldPath, "disabled", "true"));
     }
 
-    @Step("Введення даних у текстове поле {filedName}: {fieldData}")
     public void fillInputFieldWithData(String fieldName, String fieldData) {
-        $(xpath(format(inputPath, fieldName)))
-                .shouldBe(visible)
-                .shouldBe(enabled)
-                .setValue(fieldData);
+        WebElement input = driver.findElement(xpath(format(this.inputPath, fieldName)));
+        wait.until(elementToBeClickable(input));
+        input.sendKeys(HOME, chord(SHIFT, END), BACK_SPACE, fieldData);
     }
 
 
-    @Step("Перевірка кнопки Далі")
     public void checkSubmitButtonState(boolean isEnabled) {
         if (isEnabled) {
-            $(xpath("//button[@type=\"submit\"]")).shouldBe(enabled);
+            wait.until(elementToBeClickable(xpath("//button[@type=\"submit\"]")));
         } else {
-            $(xpath("//button[@type=\"submit\"]")).shouldBe(disabled);
+            wait.until(not(elementToBeClickable(xpath("//button[@type=\"submit\"]"))));
         }
 
     }
 
-    @Step("Введення даних у поле {filedName}: {fieldData}")
     public void selectDataFromDateTime(String fieldName, String fieldData) {
-        $(xpath(format(dateTimePath, fieldName)))
-                .shouldBe(visible)
-                .setValue(fieldData)
-                .pressTab();
+        WebElement dateTime = driver.findElement(xpath(format(dateTimePath, fieldName)));
+        wait
+                .until(visibilityOf(dateTime))
+                .sendKeys(HOME, chord(SHIFT, END), BACK_SPACE, fieldData, TAB);
     }
 
-    @Step("Вибір радіобатона {filedName}: {fieldData}")
     public void checkRadioButton(String fieldData) {
-        $(xpath(format(radioButtonPath, fieldData)))
-                .shouldNotBe(empty)
-                .click();
+        WebElement radioButton = driver.findElement(xpath(format(radioButtonPath, fieldData)));
+        wait
+                .until((ExpectedCondition<Boolean>) driver -> radioButton.isEnabled());
+        radioButton.click();
     }
 
-    @Step("Вибір чекбокса {fieldData}")
     public void checkCheckBox(String fieldName, String fieldData) {
-        if (fieldData.equalsIgnoreCase("так"))
-            $(xpath(format(checkboxPath, fieldName))).click();
+        if (fieldData.equalsIgnoreCase("так")) {
+            WebElement checkBox = driver.findElement(xpath(format(checkboxPath, fieldName)));
+            wait
+                    .until((ExpectedCondition<Boolean>) driver -> checkBox.isEnabled());
+            checkBox.click();
+        }
+
     }
 
-    @Step("Перевірка заповнення поля даними")
     public void checkFieldIsNotEmpty(String fieldName) {
-        $(xpath(format(inputPath, fieldName)))
-                .shouldNotBe(empty);
+        wait.until((ExpectedCondition<Boolean>) d -> !requireNonNull(d)
+                .findElement(xpath(format(inputPath, fieldName)))
+                .getAttribute("value")
+                .isEmpty());
     }
 
-    @Step("Введення даних у текстове поле {filedName}: {fieldData}")
     public void setFieldsData(FieldData fieldData) {
         switch (fieldData.getType()) {
             case RADIOBUTTON:
@@ -105,10 +109,10 @@ public class TaskPage extends CommonTaskPage {
         }
     }
 
-    @Step("Натискання кнопки \"Додати\" для створення нового запису у таблиці {tableName}")
     public void addNewRow(String tableName) {
-        $x(String.format(addNewRowButtonPath, tableName))
-                .shouldBe(enabled)
+        wait
+                .until(elementToBeClickable(xpath(String.format(addNewRowButtonPath, tableName))))
                 .click();
     }
+
 }

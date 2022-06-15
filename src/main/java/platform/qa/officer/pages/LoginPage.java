@@ -1,46 +1,41 @@
 package platform.qa.officer.pages;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
-import static com.codeborne.selenide.WebDriverRunner.url;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
-import io.qameta.allure.Step;
-
-import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends OfficerBasePage {
 
-    SelenideElement authButton = $(xpath("//button[@data-xpath='loginButton']"));
+    @FindBy(xpath = "//button[@data-xpath='loginButton']")
+    WebElement authButton;
     String loginUrl = baseUrl + "login";
 
-    @Step("Перейти до сторінки автентифікації з КЕП у кабінеті чиновника")
     public AuthWithCesPage openAuthWithCesPage() {
-        openPage()
+        return openPage()
                 .checkThatAuthorizationButtonIsActive()
                 .clickAuthorizationButton();
-        return page(new AuthWithCesPage());
     }
 
-    @Step("Відкриття стартової сторінки кабінету чиновника")
     public LoginPage openPage() {
         openPage(loginUrl);
-        assertThat(url()).as("Поточний URL не збігається з очікуваним").isEqualTo(loginUrl);
-        return page(new LoginPage());
+        wait
+                .withMessage("Поточний URL не збігається з очікуваним")
+                .until(ExpectedConditions.urlToBe(loginUrl));
+        return this;
     }
 
-    @Step("Натискання кнопки 'Увійти до кабінету'")
     public AuthWithCesPage clickAuthorizationButton() {
-        authButton.shouldBe(visible).click();
-        return page(new AuthWithCesPage());
+        wait
+                .until(visibilityOf(authButton))
+                .click();
+        return new AuthWithCesPage();
     }
 
-    @Step("Перевірка що можливість авторизації наявна та активна на сторінці")
     public LoginPage checkThatAuthorizationButtonIsActive() {
-        authButton.shouldBe(enabled);
-        return page(new LoginPage());
+        wait.until(elementToBeClickable(authButton));
+        return this;
     }
 }

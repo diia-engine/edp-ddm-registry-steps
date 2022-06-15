@@ -1,23 +1,19 @@
 package platform.qa.officer.panel;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
-import static org.openqa.selenium.By.xpath;
-
-import io.qameta.allure.Step;
 import platform.qa.base.BasePage;
 import platform.qa.officer.pages.LoginPage;
 
-import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class UserInfoPopUp extends BasePage {
 
-    SelenideElement logOutButton = $(xpath("//li[@data-xpath='logoutButton']"));
+    @FindBy(xpath = "//li[@data-xpath='logoutButton']")
+    private WebElement logOutButton;
 
-    @Step("Натискання кнопки 'Вихiд'")
     public LoginPage clickLogOutButton() {
-        logOutButton.shouldBe(visible).click();
-        return page(new LoginPage());
+        wait.until(ExpectedConditions.visibilityOf(logOutButton));
+        return new LoginPage();
     }
 }

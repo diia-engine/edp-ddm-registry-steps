@@ -1,15 +1,12 @@
 package platform.qa.officer.pages;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
-import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElement;
 
-import io.qameta.allure.Step;
 import lombok.Getter;
 import platform.qa.officer.panel.OfficerHeaderPanel;
 
-import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class MyServicesPage extends OfficerBasePage {
 
@@ -17,7 +14,8 @@ public class MyServicesPage extends OfficerBasePage {
     private final OfficerHeaderPanel headerPanel = new OfficerHeaderPanel();
 
     private final String myServicesTextUa = "Мої послуги";
-    private final SelenideElement myServicesHeader = $(xpath("//div[@data-xpath='header']/following-sibling::div//h1"));
+    @FindBy(xpath = "//div[@data-xpath='header']/following-sibling::div//h1")
+    private WebElement myServicesHeader;
 
     public MyServicesPage() {
         loadingPage();
@@ -25,9 +23,8 @@ public class MyServicesPage extends OfficerBasePage {
         checkMyServicesHeader();
     }
 
-    @Step("Сторінка має хедер 'Мої послуги'")
     public MyServicesPage checkMyServicesHeader() {
-        myServicesHeader.shouldHave(text(myServicesTextUa));
+        wait.until(textToBePresentInElement(myServicesHeader, myServicesTextUa));
         return this;
     }
 }

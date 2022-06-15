@@ -1,78 +1,86 @@
 package platform.qa.officer.pages.components;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
-import static com.codeborne.selenide.Selenide.switchTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.frameToBeAvailableAndSwitchToIt;
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfNestedElementLocatedBy;
 
-import io.qameta.allure.Step;
 import platform.qa.base.BasePage;
 
 import java.io.File;
 import java.time.Duration;
 import org.apache.commons.io.FilenameUtils;
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 
 public class CesWidget extends BasePage {
-    public SelenideElement signIframe = $(xpath("//iframe[@id='sign-widget']"));
-    public SelenideElement signIframeTitle = $(xpath("//h1[@id='titleLabel']"));
-    public SelenideElement providerSelect = $(xpath("//select[@id='pkCASelect']"));
-    public SelenideElement keyInput = $(xpath("//input[@id='pkReadFileTextField']"));
-    public SelenideElement readFileInput = $(xpath("//input[@id='pkReadFileInput']"));
-    public SelenideElement keyPasswordInput = $(xpath("//input[@id='pkReadFilePasswordTextField']"));
-    public SelenideElement readKeyButton = $(xpath("//div[@id='pkReadFileButton']"));
-    public SelenideElement signKeyButton = $(xpath("//button[@data-xpath='signButton']"));
+    public static final int READ_KEY_TIMEOUT = 60;
+    @FindBy(xpath = "//iframe[@id='sign-widget']")
+    private WebElement signIframe;
+    @FindBy(xpath = "//h1[@id='titleLabel']")
+    public WebElement signIframeTitle;
+    @FindBy(xpath = "//select[@id='pkCASelect']")
+    public WebElement providerSelect;
+    @FindBy(xpath = "//input[@id='pkReadFileTextField']")
+    public WebElement keyInput;
+    @FindBy(xpath = "//input[@id='pkReadFileInput']")
+    public WebElement readFileInput;
+    @FindBy(xpath = "//input[@id='pkReadFilePasswordTextField']")
+    public WebElement keyPasswordInput;
+    @FindBy(xpath = "//div[@id='pkReadFileButton']")
+    public WebElement readKeyButton;
+    @FindBy(xpath = "//button[@data-xpath='signButton']")
+    public WebElement signKeyButton;
 
     private static final String PATH_TO_FILE = "src/test/resources/files/";
 
-    @Step("Зчитування ключа на формі КЕП")
+    public CesWidget() {
+        loadingPage();
+        loadingComponents();
+    }
+
     public CesWidget uploadCustomKey(String key, String password, String provider) {
         checkReadKeyFormFields();
         uploadAndReadKey(key, password, provider);
-        return page(new CesWidget());
+        return this;
     }
 
-    @Step("Перевірка полів форми завантаження ключа КЕП")
     public CesWidget checkReadKeyFormFields() {
-        signIframe.shouldBe(exist);
-        switchTo().frame(signIframe);
-        signIframeTitle.should(Condition.text("Зчитування особистого ключа"), Duration.ofMillis(60000));
-        providerSelect.shouldBe(Condition.enabled);
-        keyInput.shouldBe(Condition.enabled);
-        keyPasswordInput.shouldBe(Condition.disabled);
+        wait.until(frameToBeAvailableAndSwitchToIt(signIframe));
+        wait.withTimeout(Duration.ofSeconds(READ_KEY_TIMEOUT))
+                .until(ExpectedConditions.textToBePresentInElement(signIframeTitle, "Зчитування особистого ключа"));
+        wait.until(elementToBeClickable(providerSelect));
+        wait.until(elementToBeClickable(keyInput));
+        wait.until(ExpectedConditions.attributeToBe(keyPasswordInput, "disabled", "true"));
         assertThat(readKeyButton.getAttribute("disabled")).isEqualTo("true");
 
-        return page(new CesWidget());
+        return this;
     }
 
-    @Step("Завантаження особистого ключа КЕП зі считуванням")
     public void uploadAndReadKey(String key, String password, String provider) {
-        providerSelect.selectOptionContainingText(provider);
+        wait.until(presenceOfNestedElementLocatedBy(providerSelect, By.tagName("option")));
+        new Select(providerSelect).selectByVisibleText(provider);
         uploadKey(key);
         keyPasswordInput.sendKeys(password);
         clickReadKeyButton();
-        switchTo().defaultContent();
+        driver.switchTo().defaultContent();
     }
 
-    @Step("Завантаження особистого ключа КЕП")
     public void uploadKey(String key) {
         File file = new File(PATH_TO_FILE.concat("keys/"), FilenameUtils.getName(key));
-        readFileInput.uploadFile(file);
+        readFileInput.sendKeys(file.getAbsolutePath());
     }
 
-    @Step("Натискання кнопки 'Зчитати ключ'")
     public void clickReadKeyButton() {
-        readKeyButton.shouldBe(visible).shouldBe(enabled);
-        clickElement(readKeyButton);
+        wait.until(elementToBeClickable(readKeyButton))
+                .click();
     }
 
-    @Step("Підписання особистого ключа КЕП")
     public void signKey() {
-        signKeyButton.should(visible, Duration.ofMillis(30000)).shouldBe(Condition.enabled).click();
+        wait.withTimeout(Duration.ofMillis(30000)).until(elementToBeClickable(signKeyButton))
+                .click();
     }
 }

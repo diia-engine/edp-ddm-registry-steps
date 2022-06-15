@@ -1,6 +1,5 @@
 package platform.qa.officer.pages;
 
-import io.qameta.allure.Step;
 import platform.qa.entities.Key;
 import platform.qa.entities.User;
 import platform.qa.officer.pages.components.CesWidget;
@@ -14,7 +13,6 @@ public class SignTaskPage extends CommonTaskPage {
         loadingComponents();
     }
 
-    @Step("Підписати задачу: {taskName} від користувача: {user}")
     public void signTask(User user) {
         Key key = user.getKey();
         cesWidget.checkReadKeyFormFields().uploadAndReadKey(key.getName(), key.getPassword(), key.getProvider());

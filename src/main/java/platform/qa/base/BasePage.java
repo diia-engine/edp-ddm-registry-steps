@@ -1,49 +1,72 @@
 package platform.qa.base;
 
-import static com.codeborne.selenide.Condition.cssValue;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
-
-import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j2;
 import platform.qa.configuration.MasterConfig;
 import platform.qa.configuration.RegistryConfig;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+@Log4j2
 public abstract class BasePage {
+    protected static final int DEFAULT_TIMEOUT = 15;
+    public static final int LOADER_WAIT_TIMEOUT = 30;
+    protected WebDriver driver;
     protected final RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
-    protected Logger logger = Logger.getLogger(this.getClass());
+    protected WebDriverWait wait;
+
+    @FindBy(xpath = "//*[@data-xpath='loader']")
+    private WebElement loader;
+    @FindBy(xpath = "//*[@data-xpath='component-loader']")
+    private WebElement componentLoader;
+
+    protected BasePage() {
+        this.driver = WebDriverProvider.getInstance();
+        this.wait = getDefaultWebDriverWait();
+        PageFactory.initElements(driver, this);
+    }
+
+    protected WebDriverWait getDefaultWebDriverWait() {
+        return new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT));
+    }
 
     public void openPage(String url) {
-        logger.info("Trying to open Login Page");
-        open(url);
-        logger.info("Login Page was successfully opened!");
+        log.info("Trying to open Login Page");
+        driver.get(url);
+        log.info("Login Page was successfully opened!");
     }
 
-    @Step("Очікування відображення сторінки")
     protected void loadingPage() {
-        if ($(By.xpath("//*[@data-xpath='loader']"))
-                .isDisplayed())
-            $(By.xpath("//*[@data-xpath='loader']"))
-                    .shouldHave(cssValue("display", "none"), Duration.of(30, ChronoUnit.SECONDS));
+        wait.withTimeout(Duration.ofSeconds(LOADER_WAIT_TIMEOUT)).withMessage("Loader still exist!")
+                .until((ExpectedCondition<Boolean>) driver -> {
+                    boolean isDisappeared;
+                    try {
+                        isDisappeared = loader.getCssValue("display").equals("none");
+                    } catch (WebDriverException exception) {
+                        isDisappeared = true;
+                    }
+                    return isDisappeared;
+                });
+        this.wait = getDefaultWebDriverWait();
     }
 
-    @Step("Очікування прогрузки компонентів")
     protected void loadingComponents() {
-        if ($(By.xpath("//*[@data-xpath='component-loader']"))
-                .isDisplayed())
-            $(By.xpath("//*[@data-xpath='component-loader']"))
-                    .shouldHave(cssValue("display", "none"), Duration.of(30, ChronoUnit.SECONDS));
-    }
-
-    public void clickElement(SelenideElement element) {
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver())
-                .executeScript("arguments[0].click();", element);
+        wait.withTimeout(Duration.ofSeconds(LOADER_WAIT_TIMEOUT)).withMessage("Component Loader still exist!")
+                .until((ExpectedCondition<Boolean>) driver -> {
+                    boolean isDisappeared;
+                    try {
+                        isDisappeared = componentLoader.getCssValue("display").equals("none");
+                    } catch (WebDriverException exception) {
+                        isDisappeared = true;
+                    }
+                    return isDisappeared;
+                });
+        this.wait = getDefaultWebDriverWait();
     }
 }

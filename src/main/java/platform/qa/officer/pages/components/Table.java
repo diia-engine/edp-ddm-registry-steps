@@ -1,36 +1,32 @@
 package platform.qa.officer.pages.components;
 
-import static com.codeborne.selenide.CollectionCondition.allMatch;
-import static com.codeborne.selenide.Condition.matchText;
-import static com.codeborne.selenide.Selenide.$$;
-import static org.openqa.selenium.By.xpath;
-
-import io.qameta.allure.Step;
 import platform.qa.base.BasePage;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.WebElement;
-import com.codeborne.selenide.ElementsCollection;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class Table extends BasePage {
 
-    private ElementsCollection tableRows = $$(xpath("//tbody//tr[contains(@class, 'MuiTableRow-root')]"));
+    @FindBy(xpath = "//tbody//tr[contains(@class, 'MuiTableRow-root')]")
+    private List<WebElement> tableRows;
 
     public Table() {
         loadingPage();
         loadingComponents();
     }
 
-    @Step("Отримання рядку таблиці для вказаної завершеної задачі {taskName}")
-    public ElementsCollection getRowFromTableByTaskName(String taskName) {
-        return getTableRows().filter(matchText(".*" + taskName + ".*").because("Відсутній рядок в таблиці з текстом: "
-                + taskName));
+    public List<WebElement> getRowFromTableByTaskName(String taskName) {
+        return getTableRows().stream().filter(row->row.getText().contains(taskName)).collect(Collectors.toList());
     }
 
-    private ElementsCollection getTableRows() {
+    private List<WebElement> getTableRows() {
         if (tableRows.isEmpty()) {
             return tableRows;
         } else {
-            return tableRows.shouldBe(allMatch("Елементи в таблиці недоступні", WebElement::isDisplayed));
+            return wait.withMessage("Елементи в таблиці недоступні").until(ExpectedConditions.visibilityOfAllElements(tableRows));
         }
     }
 }
