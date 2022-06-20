@@ -37,14 +37,14 @@ public class MyTasksPage extends OfficerBasePage {
 
     public MyTasksPage checkMyTasksHeader() {
         wait.until(textToBePresentInElement(myTasksHeader, myTasksTextUa));
-        return new MyTasksPage();
+        return this;
     }
 
     public MyTasksPage clickOnProvisionedTasksTab() {
         wait
                 .until(visibilityOf(provisionedTasksTab))
                 .click();
-        return new MyTasksPage();
+        return this;
     }
 
     public MyTasksPage checkNotificationMessage(String taskName) {
