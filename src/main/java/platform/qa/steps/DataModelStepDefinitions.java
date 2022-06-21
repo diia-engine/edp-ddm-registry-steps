@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Тоді;
-import platform.qa.base.FileUtils;
+import platform.qa.base.utils.FileUtils;
 import platform.qa.configuration.MasterConfig;
 import platform.qa.configuration.RegistryConfig;
 import platform.qa.cucumber.TestContext;

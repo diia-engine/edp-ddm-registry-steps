@@ -8,7 +8,7 @@ import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
 import io.cucumber.java.uk.Тоді;
-import platform.qa.base.UserProvider;
+import platform.qa.base.providers.UserProvider;
 import platform.qa.cucumber.TestContext;
 import platform.qa.entities.FieldData;
 import platform.qa.enums.FieldType;

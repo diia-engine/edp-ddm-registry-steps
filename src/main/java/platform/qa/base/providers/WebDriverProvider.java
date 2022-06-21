@@ -1,4 +1,4 @@
-package platform.qa.base;
+package platform.qa.base.providers;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.AccessLevel;

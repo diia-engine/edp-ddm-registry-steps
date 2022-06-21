@@ -1,4 +1,4 @@
-package platform.qa.base;
+package platform.qa.base.utils;
 
 import lombok.SneakyThrows;
 

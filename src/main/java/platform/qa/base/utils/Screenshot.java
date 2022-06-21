@@ -1,7 +1,8 @@
-package platform.qa.base;
+package platform.qa.base.utils;
 
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
+import platform.qa.base.providers.WebDriverProvider;
 
 import java.io.File;
 import java.net.URI;

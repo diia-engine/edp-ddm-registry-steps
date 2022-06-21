@@ -1,6 +1,7 @@
 package platform.qa.base;
 
 import lombok.extern.log4j.Log4j2;
+import platform.qa.base.providers.WebDriverProvider;
 import platform.qa.configuration.MasterConfig;
 import platform.qa.configuration.RegistryConfig;
 

@@ -8,7 +8,7 @@ import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Тоді;
 import platform.qa.api.FormManagementProviderApi;
 import platform.qa.api.ProcessDefinitionApi;
-import platform.qa.base.Convertor;
+import platform.qa.base.utils.Convertor;
 import platform.qa.configuration.MasterConfig;
 import platform.qa.configuration.RegistryConfig;
 import platform.qa.cucumber.TestContext;
