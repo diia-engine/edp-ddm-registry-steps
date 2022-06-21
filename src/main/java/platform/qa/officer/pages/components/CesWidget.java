@@ -18,6 +18,8 @@ import org.openqa.selenium.support.ui.Select;
 
 public class CesWidget extends BasePage {
     public static final int READ_KEY_TIMEOUT = 60;
+    public static final int SIGN_KEY_TIMEOUT = 30;
+
     @FindBy(xpath = "//iframe[@id='sign-widget']")
     private WebElement signIframe;
     @FindBy(xpath = "//h1[@id='titleLabel']")
@@ -52,6 +54,7 @@ public class CesWidget extends BasePage {
         wait.until(frameToBeAvailableAndSwitchToIt(signIframe));
         wait.withTimeout(Duration.ofSeconds(READ_KEY_TIMEOUT))
                 .until(ExpectedConditions.textToBePresentInElement(signIframeTitle, "Зчитування особистого ключа"));
+        wait = getDefaultWebDriverWait();
         wait.until(elementToBeClickable(providerSelect));
         wait.until(elementToBeClickable(keyInput));
         wait.until(ExpectedConditions.attributeToBe(keyPasswordInput, "disabled", "true"));
@@ -80,7 +83,8 @@ public class CesWidget extends BasePage {
     }
 
     public void signKey() {
-        wait.withTimeout(Duration.ofMillis(30000)).until(elementToBeClickable(signKeyButton))
+        wait.withTimeout(Duration.ofSeconds(SIGN_KEY_TIMEOUT)).until(elementToBeClickable(signKeyButton))
                 .click();
+        wait = getDefaultWebDriverWait();
     }
 }

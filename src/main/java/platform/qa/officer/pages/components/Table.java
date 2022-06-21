@@ -26,7 +26,10 @@ public class Table extends BasePage {
         if (tableRows.isEmpty()) {
             return tableRows;
         } else {
-            return wait.withMessage("Елементи в таблиці недоступні").until(ExpectedConditions.visibilityOfAllElements(tableRows));
+            List<WebElement> tableRows =
+                    wait.withMessage("Елементи в таблиці недоступні").until(ExpectedConditions.visibilityOfAllElements(this.tableRows));
+            wait = getDefaultWebDriverWait();
+            return tableRows;
         }
     }
 }

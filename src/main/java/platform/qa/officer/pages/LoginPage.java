@@ -24,6 +24,7 @@ public class LoginPage extends OfficerBasePage {
         wait
                 .withMessage("Поточний URL не збігається з очікуваним")
                 .until(ExpectedConditions.urlToBe(loginUrl));
+        wait = getDefaultWebDriverWait();
         return this;
     }
 

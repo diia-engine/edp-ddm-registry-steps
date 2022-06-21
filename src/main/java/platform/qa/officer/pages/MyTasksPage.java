@@ -32,6 +32,7 @@ public class MyTasksPage extends OfficerBasePage {
                 .withMessage(String.format("Задача \"%s\" відсутня у черзі задач", taskName))
                 .until((ExpectedCondition<Boolean>) d -> new Table()
                         .getRowFromTableByTaskName(taskName).size() > 0);
+        wait = getDefaultWebDriverWait();
         return this;
     }
 
