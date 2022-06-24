@@ -3,7 +3,7 @@ package platform.qa.base.providers;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import platform.qa.configuration.RunUITestConfiguration;
 
 import org.openqa.selenium.WebDriver;
@@ -11,7 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Log4j
+@Log4j2
 public class WebDriverProvider {
     protected static RunUITestConfiguration runUITestConfig = RunUITestConfiguration.getInstance();
     private static WebDriver instance;

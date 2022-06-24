@@ -6,6 +6,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Тоді;
+import lombok.extern.log4j.Log4j2;
 import platform.qa.api.FormManagementProviderApi;
 import platform.qa.api.ProcessDefinitionApi;
 import platform.qa.base.utils.Convertor;
@@ -25,10 +26,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.log4j.Logger;
 
+@Log4j2
 public class RegulationsStepDefinitions {
-    private static Logger logger = Logger.getLogger(RegulationsStepDefinitions.class);
 
     private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
     private Repository gerritRepo = new Repository(registryConfig.getGerrit(), "registry-regulations", "master");
@@ -70,14 +70,14 @@ public class RegulationsStepDefinitions {
     }
 
     private List<String> getDeployedProcessesFromBpms() {
-        logger.info("Start getting processes from Business Process Management!");
+        log.info("Start getting processes from Business Process Management!");
         List<Definition> deployedProcesses =
                 new ProcessDefinitionApi(registryConfig.getBpms()).getAllDefinitions();
         return deployedProcesses.stream().map(Definition::getName).collect(Collectors.toList());
     }
 
     private List<String> getDeployedFormsFromProvider() {
-        logger.info("Start getting forms from Form Provider!");
+        log.info("Start getting forms from Form Provider!");
         List<Map> deployedForms =
                 new FormManagementProviderApi(registryConfig.getFormManagementProvider()).getAllForms();
         return deployedForms.stream().map(form -> form.get("name").toString()).collect(Collectors.toList());

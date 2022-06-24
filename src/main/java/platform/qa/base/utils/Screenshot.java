@@ -1,7 +1,7 @@
 package platform.qa.base.utils;
 
 import lombok.SneakyThrows;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import platform.qa.base.providers.WebDriverProvider;
 
 import java.io.File;
@@ -12,7 +12,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
-@Log4j
+@Log4j2
 public class Screenshot {
     private static final String SCREENSHOTS_PATH = "target/screenshots";
 

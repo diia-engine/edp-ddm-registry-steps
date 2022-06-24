@@ -1,6 +1,7 @@
 package platform.qa.base.utils;
 
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,16 +11,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Log4j2
 public class FileUtils {
-    private static final Logger LOG = Logger.getLogger(FileUtils.class);
 
     public static String readFromFile(String path, String name) {
         try {
             Path pathToFile = Path.of(path, FilenameUtils.getName(name));
-            LOG.info("Read from file: " + pathToFile);
+            log.info("Read from file: " + pathToFile);
             return Files.readString(pathToFile, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException("File was not found!: ", e);
