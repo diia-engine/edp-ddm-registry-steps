@@ -119,7 +119,7 @@ public class OfficerCabinetStepDefinitions {
 
     @Коли("пересвідчується в правильному відображенні введених даних на формі {string}")
     public void checkSignForm(String formName) {
-        taskPage
+        new TaskPage()
                 .checkTaskName(TaskPage.class, formName)
                 .checkFieldsAreNotEditable();
     }
