@@ -5,7 +5,6 @@ import static platform.qa.enums.Context.OFFICER_USER_LOGIN;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.uk.І;
-import io.cucumber.java.uk.Атакож;
 import io.cucumber.java.uk.Дано;
 import io.cucumber.java.uk.Коли;
 import io.cucumber.java.uk.Та;
@@ -32,7 +31,6 @@ public class OfficerCabinetStepDefinitions {
 
     private UserProvider users = UserProvider.getInstance();
     private TestContext testContext;
-    TaskPage taskPage = new TaskPage();
 
     public OfficerCabinetStepDefinitions(TestContext testContext) {
         this.testContext = testContext;
@@ -86,34 +84,34 @@ public class OfficerCabinetStepDefinitions {
 
     @Коли("бачить форму {string} із кнопкою \"Далі\" яка {booleanValue}")
     public void verifyDisplayFormName(String formName, boolean isEnabled) {
-        taskPage
+        new TaskPage()
                 .checkTaskName(TaskPage.class, formName)
                 .checkSubmitButtonState(isEnabled);
     }
 
     @Коли("поле {string} має значення заповнене автоматично")
     public void verifyFieldIsFilledWithData(String fieldName) {
-        taskPage
+        new TaskPage()
                 .checkFieldIsNotEmpty(fieldName);
     }
 
     @Коли("користувач заповнює форму даними$")
     public void userFillFormFieldsWithData(List<FieldData> rows) {
         for (FieldData fieldData : rows) {
-            taskPage
+            new TaskPage()
                     .setFieldsData(fieldData);
         }
     }
 
     @Коли("натискає кнопку \"Додати\" у {string}")
-    public void addNewRowToTheTable(String tableName){
-        taskPage
+    public void addNewRowToTheTable(String tableName) {
+        new TaskPage()
                 .addNewRow(tableName);
     }
 
     @Та("натискає кнопку \"Далі\"")
     public void clickButton() {
-        taskPage
+        new TaskPage()
                 .submitForm();
     }
 
@@ -153,9 +151,12 @@ public class OfficerCabinetStepDefinitions {
 
     @І("додає запис до {string} таблиці із даними")
     public void userFillGridFieldsWithData(String gridName, List<FieldData> rows) {
-        taskPage.clickAddButton(gridName);
+        TaskPage taskPage = new TaskPage();
+        taskPage
+                .clickAddButton(gridName);
         for (FieldData fieldData : rows) {
-            taskPage.setFieldsData(fieldData);
+            taskPage
+                    .setFieldsData(fieldData);
         }
         taskPage
                 .clickSaveButton();
