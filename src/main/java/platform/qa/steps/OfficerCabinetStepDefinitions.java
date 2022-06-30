@@ -115,6 +115,13 @@ public class OfficerCabinetStepDefinitions {
                 .submitForm();
     }
 
+    @Та("на формі {string} бачить повідомлення {string} з текстом:")
+    public void checkMessage(String formName, String messageLabel, String messageText){
+        new TaskPage()
+                .checkTaskName(TaskPage.class, formName)
+                .checkTextareaText(messageLabel, messageText.replace("|", ""));
+    }
+
     @Коли("пересвідчується в правильному відображенні введених даних на формі {string}")
     public void checkSignForm(String formName) {
         new TaskPage()
