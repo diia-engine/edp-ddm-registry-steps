@@ -22,7 +22,6 @@ import static org.openqa.selenium.Keys.ARROW_DOWN;
 import static org.openqa.selenium.Keys.ENTER;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
-import lombok.SneakyThrows;
 import platform.qa.base.BasePage;
 
 import java.util.List;
@@ -44,15 +43,14 @@ public class Select extends BasePage {
         loadingComponents();
     }
 
-    @SneakyThrows
     public void selectItemFromDropDown(String itemName, String itemValue) {
         String selectXPath = getSelectXPath(itemName);
         WebElement select = driver.findElement(xpath(selectXPath));
         wait.until(ExpectedConditions.elementToBeClickable(select))
                 .click();
-        select.sendKeys(itemValue);
         wait.until(visibilityOfAllElements(selectItems));
-        wait.until((ExpectedCondition<Boolean>) driver -> selectItems.stream().noneMatch(item -> item.getText().isEmpty()));
+        select.sendKeys(itemValue);
+        wait.until((ExpectedCondition<Boolean>) driver -> selectItems.stream().allMatch(item -> item.getText().contains(itemValue)));
         select.sendKeys(ARROW_DOWN, ENTER);
         wait.until((ExpectedCondition<Boolean>) driver -> !select.getAttribute("value").isEmpty());
     }
