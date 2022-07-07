@@ -21,6 +21,9 @@ import platform.qa.enums.Context;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class to pass context between scenarios
+ */
 public class ScenarioContext {
     private Map<String, Object> scenarioContext;
 

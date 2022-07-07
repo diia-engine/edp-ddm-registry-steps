@@ -31,6 +31,9 @@ import platform.qa.enums.Context;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Cucumber step definitions for data factory search conditions
+ */
 public class DataModelStepDefinitions {
     private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
     private TestContext testContext;

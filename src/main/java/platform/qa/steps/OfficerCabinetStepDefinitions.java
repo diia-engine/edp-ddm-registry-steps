@@ -43,6 +43,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+/**
+ * Cucumber step definitions for officer portal
+ */
 public class OfficerCabinetStepDefinitions {
 
     private UserProvider users = UserProvider.getInstance();

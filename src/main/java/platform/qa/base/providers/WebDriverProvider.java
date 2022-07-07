@@ -26,6 +26,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+/**
+ * WebDriver Singleton
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Log4j2
 public class WebDriverProvider {

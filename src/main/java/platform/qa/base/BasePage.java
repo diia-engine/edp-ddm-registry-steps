@@ -30,6 +30,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Common Page Object
+ */
 @Log4j2
 public abstract class BasePage {
     protected static final int DEFAULT_TIMEOUT = 15;

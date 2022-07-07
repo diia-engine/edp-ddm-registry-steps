@@ -2,7 +2,7 @@ package tests;
 
 import org.junit.jupiter.api.Test;
 
-class DataModelStepDefinitionsTest extends BaseTest {
+class DataModelStepDefinitionsTest {
 
     @Test
     void data_model_return_json_with_data() {

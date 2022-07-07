@@ -18,6 +18,9 @@ package platform.qa.cucumber;
 
 import lombok.Getter;
 
+/**
+ * Class to pass context between test
+ */
 @Getter
 public class TestContext {
     private ScenarioContext scenarioContext;

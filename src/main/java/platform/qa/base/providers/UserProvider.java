@@ -24,6 +24,9 @@ import platform.qa.entities.User;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Provide users for registry
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserProvider {
     private static UserProvider instance;

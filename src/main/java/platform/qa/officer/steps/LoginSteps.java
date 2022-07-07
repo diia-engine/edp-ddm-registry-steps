@@ -21,6 +21,9 @@ import platform.qa.entities.User;
 import platform.qa.officer.pages.DashboardPage;
 import platform.qa.officer.pages.LoginPage;
 
+/**
+ * Aggregated steps for login
+ */
 public class LoginSteps {
     public DashboardPage loginOfficerPortal(User user) {
         Key userKey = user.getKey();

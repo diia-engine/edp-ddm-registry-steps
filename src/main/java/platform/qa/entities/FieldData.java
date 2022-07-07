@@ -21,6 +21,9 @@ import lombok.Getter;
 import lombok.Setter;
 import platform.qa.enums.FieldType;
 
+/**
+ * POJO to map fields on UI Forms
+ */
 @AllArgsConstructor
 @Getter
 @Setter

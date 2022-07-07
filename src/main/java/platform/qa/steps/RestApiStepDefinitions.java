@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.Map;
 import org.apache.http.HttpStatus;
 
+/**
+ * Cucumber step definitions for platform REST API
+ */
 public class RestApiStepDefinitions {
     private RegistryConfig registryConfig = MasterConfig.getInstance().getRegistryConfig();
     private TestContext testContext;
